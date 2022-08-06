@@ -51,15 +51,16 @@ export class AccountsController {
   }
 
   @Get(':email')
-  findOne(@Param('email') email: string) {
-    return this.accountsService.findOne(email);
+  async findOne(@Param('email') email: string) {
+    console.log('123');
+
+    return await this.accountsService.findOne(email);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAccountDto: UpdateAccountDto) {
     return this.accountsService.update(+id, updateAccountDto);
   }
-
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.accountsService.remove(+id);
