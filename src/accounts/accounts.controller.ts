@@ -20,6 +20,7 @@ import {
   ParseFilePipe,
   FileTypeValidator,
   UploadedFiles,
+  HttpStatus,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AccountsService } from './accounts.service';
@@ -64,12 +65,16 @@ export class AccountsController {
     return this.accountsService.remove(+id);
   }
 
-  // @Post('/login')
-  // @UseGuards(AuthGuard('local'))
-  // @Post('auth/login')
-  // async login(@Request() req) {
-  //   return this.authService.login(req.user);
-  // }
+  @UseGuards(AuthGuard('local'))
+  @Post('/login')
+  async login(@Request() req) {
+    const result = await this.authService.login(req.user);
+    return {
+      ...result,
+      statusCode: HttpStatus.ACCEPTED,
+      message: 'Login Successfully!!',
+    };
+  }
 
   //   @Post('/profile/:id')
   //   @Roles(Role.ADMIN)

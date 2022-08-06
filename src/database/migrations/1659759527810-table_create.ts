@@ -8,7 +8,7 @@ export class tableCreate1659759527810 implements MigrationInterface {
       `CREATE TABLE \`role\` (\`id\` int NOT NULL AUTO_INCREMENT, \`role_name\` varchar(255) NOT NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`,
     );
     await queryRunner.query(
-      `CREATE TABLE \`account\` (\`id\` int NOT NULL AUTO_INCREMENT, \`username\` varchar(255) NOT NULL, \`email\` varchar(255) NOT NULL, \`address\` varchar(255) NOT NULL, \`sex\` varchar(255) NOT NULL, \`password\` varchar(255) NOT NULL, \`roleId\` int NULL,  INDEX \`REL_77bf26eef8865441fb9bd53a36\` (\`roleId\`), PRIMARY KEY (\`id\`)) ENGINE=InnoDB`,
+      `CREATE TABLE \`account\` (\`id\` int NOT NULL AUTO_INCREMENT, \`username\` varchar(255) NOT NULL, \`email\` varchar(255) NOT NULL, \`address\` varchar(255) NOT NULL, \`sex\` varchar(255) NOT NULL, \`password\` varchar(255) NOT NULL, \`roleId\` int NULL DEFAULT 2,  INDEX \`REL_77bf26eef8865441fb9bd53a36\` (\`roleId\`), PRIMARY KEY (\`id\`)) ENGINE=InnoDB`,
     );
     await queryRunner.query(
       `CREATE TABLE \`treatment\` (\`id\` int NOT NULL AUTO_INCREMENT, \`treament_name\` varchar(255) NOT NULL, \`treament_description\` varchar(255) NOT NULL, \`treament_email\` varchar(255) NOT NULL, \`treament_price\` int NOT NULL, \`spaId\` int NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`,
@@ -58,8 +58,13 @@ export class tableCreate1659759527810 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE \`dish\` ADD CONSTRAINT \`FK_3bf1369e81b12358ba268f7f689\` FOREIGN KEY (\`restaurantId\`) REFERENCES \`restaurant\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
+    await queryRunner.query(
+      `INSERT INTO role (id, role_name) VALUES (1, 'ADMIN')`,
+    );
+    await queryRunner.query(
+      `INSERT INTO role (id, role_name) VALUES (2, 'CUSTOMER')`,
+    );
   }
-
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       `ALTER TABLE \`dish\` DROP FOREIGN KEY \`FK_3bf1369e81b12358ba268f7f689\``,

@@ -4,17 +4,17 @@ import { Role } from 'src/roles/entities/role.entity';
 export class CreateAccountDto {
   @IsNotEmpty()
   username: string;
-  @IsNotEmpty()
   @IsEmail()
-  email: string;
   @IsNotEmpty()
-  password: string;
-  @Match('password')
-  passwordConfirm: string;
+  email: string;
   @IsNotEmpty()
   address: string;
   @IsNotEmpty()
   sex: string;
+  @IsNotEmpty()
+  password: string;
+  @Match('password')
+  comfirmPassword: string;
   role: Role;
   image?: string = 'Nguyen Thanh Tung';
 }
