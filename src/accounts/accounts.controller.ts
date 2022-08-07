@@ -1,5 +1,3 @@
-import { storage } from './../config/multer.config';
-import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import { AuthService } from './../auth/auth.service';
 import {
   Controller,
@@ -15,20 +13,12 @@ import {
   Request,
   Inject,
   forwardRef,
-  UseInterceptors,
-  UploadedFile,
-  ParseFilePipe,
-  FileTypeValidator,
-  UploadedFiles,
   HttpStatus,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AccountsService } from './accounts.service';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
-import { Roles } from 'src/decorator/roles.decorator';
-import { Role } from 'src/enums/role.enum';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 @Controller('accounts')
 export class AccountsController {
   constructor(
@@ -43,7 +33,6 @@ export class AccountsController {
     @Body() createAccountDto: CreateAccountDto,
     // @UploadedFiles() files,
   ) {
-    console.log(createAccountDto);
     return await this.accountsService.create(createAccountDto);
   }
   @Get()
