@@ -17,6 +17,7 @@ import { DishesModule } from './dishes/dishes.module';
 import { WorkoutsModule } from './workouts/workouts.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { SeftCaresModule } from './seft_cares/seft_cares.module';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { SeftCaresModule } from './seft_cares/seft_cares.module';
     DishesModule,
     WorkoutsModule,
     SeftCaresModule,
+    FileModule,
   ],
   controllers: [AppController],
   providers: [

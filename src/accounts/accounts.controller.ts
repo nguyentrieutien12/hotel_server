@@ -19,6 +19,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { AccountsService } from './accounts.service';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
+import { Roles } from 'src/decorator/roles.decorator';
+import { Role } from 'src/enums/role.enum';
 @Controller('accounts')
 export class AccountsController {
   constructor(
@@ -36,24 +38,25 @@ export class AccountsController {
     return await this.accountsService.create(createAccountDto);
   }
   @Get()
+  @Roles(Role.ADMIN)
   async findAll() {
     return await this.accountsService.findAll();
   }
-
   @Get(':email')
+  @Roles(Role.ADMIN)
   async findOne(@Param('email') email: string) {
     console.log('123');
-
     return await this.accountsService.findOne(email);
   }
 
   @Patch(':id')
+  @UsePipes(new ValidationPipe({ transform: true }))
   update(@Param('id') id: string, @Body() updateAccountDto: UpdateAccountDto) {
     return this.accountsService.update(+id, updateAccountDto);
   }
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.accountsService.remove(+id);
+  async remove(@Param('id') id: string): Promise<any> {
+    return await this.accountsService.remove(+id);
   }
 
   @UseGuards(AuthGuard('local'))

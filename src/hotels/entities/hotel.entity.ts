@@ -13,6 +13,8 @@ export class Hotel {
   hotel_name: string;
   @Column()
   hotel_email: string;
+  @Column()
+  hotel_address: string;
   @OneToMany(() => Spa, (spa) => spa.hotel)
   spas: Spa[];
   @OneToMany(() => Restaurant, (restaurant) => restaurant.hotel)

@@ -43,11 +43,54 @@ export class AccountsService {
       .getOne();
   }
 
-  update(id: number, updateAccountDto: UpdateAccountDto) {
-    return `This action updates a #${id} account`;
+  async update(id: number, updateAccountDto: UpdateAccountDto) {
+    let newUpdateAccount = {};
+    if (updateAccountDto.password) {
+      updateAccountDto.password = await hashPassword(updateAccountDto.password);
+      var { username, email, address, sex, password, role } = updateAccountDto;
+      newUpdateAccount = { username, email, address, sex, password, role };
+    } else {
+      var { username, email, address, sex, role } = updateAccountDto;
+      newUpdateAccount = { username, email, address, sex, role };
+    }
+
+    try {
+      await getRepository(Account)
+        .createQueryBuilder('account')
+        .update()
+        .set(newUpdateAccount)
+        .where('id = :id', { id })
+        .execute();
+      return {
+        message: 'Update Account Successfully !',
+        statusCode: HttpStatus.ACCEPTED,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        message: 'Update Account Fail !',
+        statusCode: HttpStatus.BAD_REQUEST,
+      };
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} account`;
+  async remove(id: number) {
+    try {
+      await getRepository(Account)
+        .createQueryBuilder('account')
+        .delete()
+        .where('id = :id', { id })
+        .execute();
+
+      return {
+        message: 'Delete Account SuccessFully !',
+        statusCode: HttpStatus.ACCEPTED,
+      };
+    } catch (error) {
+      return {
+        message: 'Delete Account Fail !',
+        statusCode: HttpStatus.BAD_REQUEST,
+      };
+    }
   }
 }

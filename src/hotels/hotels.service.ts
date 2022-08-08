@@ -1,11 +1,34 @@
-import { Injectable } from '@nestjs/common';
+import { getRepository } from 'typeorm';
+import { Injectable, HttpStatus } from '@nestjs/common';
 import { CreateHotelDto } from './dto/create-hotel.dto';
 import { UpdateHotelDto } from './dto/update-hotel.dto';
+import { Hotel } from './entities/hotel.entity';
 
 @Injectable()
 export class HotelsService {
-  create(createHotelDto: CreateHotelDto) {
-    return 'This action adds a new hotel';
+  async create(createHotelDto: CreateHotelDto) {
+    try {
+      const images = createHotelDto.images;
+      delete createHotelDto.images;
+      const hotel = await getRepository(Hotel)
+        .createQueryBuilder('account')
+        .insert()
+        .values(createHotelDto)
+        .execute();
+      console.log();
+      const { insertId } = hotel.raw;
+      console.log(insertId);
+
+      return {
+        statusCode: HttpStatus.CREATED,
+        message: 'Create Hotel Successfully !',
+      };
+    } catch (error) {
+      return {
+        statusCode: HttpStatus.CREATED,
+        message: 'Create Hotel Fail !',
+      };
+    }
   }
 
   findAll() {
