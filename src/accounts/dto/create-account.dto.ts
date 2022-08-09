@@ -1,3 +1,4 @@
+import { Image } from 'src/image/entities/image.entity';
 import { IsEmail, IsNotEmpty, Matches } from 'class-validator';
 import { Match } from 'src/decorator/match.decorator';
 import { Role } from 'src/roles/entities/role.entity';
@@ -16,5 +17,5 @@ export class CreateAccountDto {
   @Match('password')
   comfirmPassword: string;
   role: Role;
-  image?: string = 'Nguyen Thanh Tung';
+  image?: any = 'Nguyen Thanh Tung';
 }

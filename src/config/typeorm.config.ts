@@ -3,9 +3,6 @@ import {
   TypeOrmModuleAsyncOptions,
   TypeOrmModuleOptions,
 } from '@nestjs/typeorm';
-import { Account } from 'src/accounts/entities/account.entity';
-import { Role } from 'src/roles/entities/role.entity';
-
 export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
   imports: [ConfigModule],
   inject: [ConfigService],

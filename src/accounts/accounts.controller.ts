@@ -43,7 +43,6 @@ export class AccountsController {
     return await this.accountsService.findAll();
   }
   @Get(':email')
-  @Roles(Role.ADMIN)
   async findOne(@Param('email') email: string) {
     console.log('123');
     return await this.accountsService.findOne(email);

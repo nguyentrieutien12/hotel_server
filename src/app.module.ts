@@ -15,10 +15,10 @@ import { GymsModule } from './gyms/gyms.module';
 import { TreatmentsModule } from './treatments/treatments.module';
 import { DishesModule } from './dishes/dishes.module';
 import { WorkoutsModule } from './workouts/workouts.module';
-import { MulterModule } from '@nestjs/platform-express';
 import { SeftCaresModule } from './seft_cares/seft_cares.module';
 import { FileModule } from './file/file.module';
-
+import { ImageModule } from './image/image.module';
+import { QrcodeModule } from './qrcode/qrcode.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -34,6 +34,8 @@ import { FileModule } from './file/file.module';
     WorkoutsModule,
     SeftCaresModule,
     FileModule,
+    ImageModule,
+    QrcodeModule,
   ],
   controllers: [AppController],
   providers: [

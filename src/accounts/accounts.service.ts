@@ -32,7 +32,7 @@ export class AccountsService {
     return await getRepository(Account)
       .createQueryBuilder('account')
       .innerJoinAndSelect('account.role', 'role')
-      .orderBy('account.id', 'ASC')
+      .orderBy('account.id', 'DESC')
       .getMany();
   }
   async findOne(email: string): Promise<Account | undefined> {

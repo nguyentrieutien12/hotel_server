@@ -3,27 +3,42 @@ import { Injectable, HttpStatus } from '@nestjs/common';
 import { CreateHotelDto } from './dto/create-hotel.dto';
 import { UpdateHotelDto } from './dto/update-hotel.dto';
 import { Hotel } from './entities/hotel.entity';
-
+import { Image } from 'src/image/entities/image.entity';
+var QRCode = require('qrcode');
+import { link } from 'src/contains/port.contain';
+import { Qrcode } from 'src/qrcode/entities/qrcode.entity';
+console.log(process.env.PORT);
 @Injectable()
 export class HotelsService {
   async create(createHotelDto: CreateHotelDto) {
     try {
-      const images = createHotelDto.images;
+      const images: string[] = createHotelDto.images;
       delete createHotelDto.images;
       const hotel = await getRepository(Hotel)
         .createQueryBuilder('account')
         .insert()
         .values(createHotelDto)
         .execute();
-      console.log();
       const { insertId } = hotel.raw;
-      console.log(insertId);
-
+      for (let i = 0; i < images.length; i++) {
+        await getRepository(Image)
+          .createQueryBuilder('image')
+          .insert()
+          .values({ image_url: images[i], hotel: insertId })
+          .execute();
+      }
+      const qr = await QRCode.toDataURL(`${link}/${insertId}`);
+      await getRepository(Qrcode)
+        .createQueryBuilder('qrcode')
+        .insert()
+        .values({ qr_link: qr, hotel: insertId })
+        .execute();
       return {
         statusCode: HttpStatus.CREATED,
         message: 'Create Hotel Successfully !',
       };
     } catch (error) {
+      console.log(error);
       return {
         statusCode: HttpStatus.CREATED,
         message: 'Create Hotel Fail !',
@@ -31,8 +46,17 @@ export class HotelsService {
     }
   }
 
-  findAll() {
-    return `This action returns all hotels`;
+  async findAll() {
+    return await getRepository(Hotel)
+      .createQueryBuilder('hotel')
+      .innerJoinAndSelect('hotel.images', 'image')
+      .innerJoinAndMapOne(
+        'hotel.qr',
+        Qrcode,
+        'qrcode',
+        'qrcode.hotel = hotel.id',
+      )
+      .getMany();
   }
 
   findOne(id: number) {

@@ -1,3 +1,4 @@
+import { Image } from 'src/image/entities/image.entity';
 import { Role } from 'src/roles/entities/role.entity';
 import {
   Entity,
