@@ -33,12 +33,16 @@ export class HotelsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateHotelDto: UpdateHotelDto) {
-    return this.hotelsService.update(+id, updateHotelDto);
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async update(
+    @Param('id') id: string,
+    @Body() updateHotelDto: UpdateHotelDto,
+  ) {
+    return await this.hotelsService.update(+id, updateHotelDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.hotelsService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.hotelsService.remove(+id);
   }
 }

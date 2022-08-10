@@ -32,9 +32,9 @@ export class Hotel {
   gyms: Gym[];
   @OneToMany(() => SeftCare, (seftcare) => seftcare.hotel)
   seftcares: SeftCare[];
-  @OneToMany(() => Image, (image) => image.hotel)
+  @OneToMany(() => Image, (image) => image.hotel, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   images: Image[];
-  @OneToOne(() => Qrcode)
-  @JoinColumn()
-  qrcode: Qrcode;
 }

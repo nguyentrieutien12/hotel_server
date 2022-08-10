@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { SpasService } from './spas.service';
 import { CreateSpaDto } from './dto/create-spa.dto';
 import { UpdateSpaDto } from './dto/update-spa.dto';
@@ -8,8 +18,10 @@ export class SpasController {
   constructor(private readonly spasService: SpasService) {}
 
   @Post()
-  create(@Body() createSpaDto: CreateSpaDto) {
-    return this.spasService.create(createSpaDto);
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async create(@Body() createSpaDto: CreateSpaDto) {
+    console.log(createSpaDto);
+    return await this.spasService.create(createSpaDto);
   }
 
   @Get()

@@ -3,8 +3,9 @@ export class CreateSpaDto {
   @IsNotEmpty()
   spa_name: string;
   @IsNotEmpty()
-  @IsEmail()
   spa_description: string;
   @IsNotEmpty()
-  hotel_id: number;
+  hotel: any;
+  @IsNotEmpty()
+  images: any;
 }

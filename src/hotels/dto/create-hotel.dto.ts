@@ -7,5 +7,7 @@ export class CreateHotelDto {
   @IsNotEmpty()
   hotel_email: string;
   @IsNotEmpty()
+  hotel_address: string;
+  @IsNotEmpty()
   images: any[];
 }

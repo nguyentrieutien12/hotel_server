@@ -1,4 +1,5 @@
 import { Hotel } from 'src/hotels/entities/hotel.entity';
+import { Image } from 'src/image/entities/image.entity';
 import { Treatment } from 'src/treatments/entities/treatment.entity';
 import {
   Entity,
@@ -12,11 +13,14 @@ export class Spa {
   @PrimaryGeneratedColumn()
   id: number;
   @Column()
-  hotel_name: string;
+  spa_name: string;
   @Column()
-  hotel_description: string;
+  spa_description: string;
   @ManyToOne(() => Hotel, (hotel) => hotel.spas)
   hotel: Hotel;
+
   @OneToMany(() => Treatment, (treatment) => treatment.spa)
   treatments: Treatment[];
+  @OneToMany(() => Image, (image) => image.spa)
+  images: Image[];
 }

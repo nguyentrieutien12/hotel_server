@@ -12,6 +12,15 @@ console.log(process.env.PORT);
 export class HotelsService {
   async create(createHotelDto: CreateHotelDto) {
     try {
+      const { hotel_email } = createHotelDto;
+      const findHotel = await getRepository(Hotel).findOne({ hotel_email });
+      if (findHotel) {
+        return {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message:
+            'Hotel email already exists, please register with another email',
+        };
+      }
       const images: string[] = createHotelDto.images;
       delete createHotelDto.images;
       const hotel = await getRepository(Hotel)
@@ -49,13 +58,14 @@ export class HotelsService {
   async findAll() {
     return await getRepository(Hotel)
       .createQueryBuilder('hotel')
-      .innerJoinAndSelect('hotel.images', 'image')
+      .leftJoinAndSelect('hotel.images', 'image')
       .innerJoinAndMapOne(
         'hotel.qr',
         Qrcode,
         'qrcode',
         'qrcode.hotel = hotel.id',
       )
+      .orderBy('hotel.id', 'DESC')
       .getMany();
   }
 
@@ -63,11 +73,71 @@ export class HotelsService {
     return `This action returns a #${id} hotel`;
   }
 
-  update(id: number, updateHotelDto: UpdateHotelDto) {
-    return `This action updates a #${id} hotel`;
+  async update(id: number, updateHotelDto: UpdateHotelDto) {
+    try {
+      const { images, hotel_email } = updateHotelDto;
+      const hotel = await getRepository(Hotel)
+        .createQueryBuilder('hotel')
+        .where('hotel_email = :hotel_email', { hotel_email })
+        .andWhere('id != :id', { id })
+        .getOne();
+      if (hotel) {
+        return {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message:
+            'Hotel email already exists, please register with another email',
+        };
+      }
+      delete updateHotelDto.images;
+      await getRepository(Hotel)
+        .createQueryBuilder('hotel')
+        .update()
+        .set(updateHotelDto)
+        .where('id = :id', { id })
+        .execute();
+      if (images.length > 0) {
+        await getRepository(Image)
+          .createQueryBuilder('image')
+          .delete()
+          .where('hotelId = :id', { id })
+          .execute();
+        for (let i = 0; i < images.length; i++) {
+          await getRepository(Image)
+            .createQueryBuilder('image')
+            .insert()
+            .values({ image_url: images[i], hotel: id })
+            .execute();
+        }
+      }
+      return {
+        statusCode: HttpStatus.ACCEPTED,
+        message: 'Update Hotel Successfully !',
+      };
+    } catch (error) {
+      return {
+        statusCode: HttpStatus.ACCEPTED,
+        message: 'Update Hotel Fail !',
+      };
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} hotel`;
+  async remove(id: number) {
+    try {
+      await getRepository(Hotel)
+        .createQueryBuilder('hotel')
+        .delete()
+        .where('id = :id', { id })
+        .execute();
+
+      return {
+        message: 'Delete Hotel SuccessFully !',
+        statusCode: HttpStatus.ACCEPTED,
+      };
+    } catch (error) {
+      return {
+        message: 'Delete Hotel Fail !',
+        statusCode: HttpStatus.BAD_REQUEST,
+      };
+    }
   }
 }
