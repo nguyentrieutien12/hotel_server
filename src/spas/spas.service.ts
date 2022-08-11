@@ -46,11 +46,59 @@ export class SpasService {
     return `This action returns a #${id} spa`;
   }
 
-  update(id: number, updateSpaDto: UpdateSpaDto) {
-    return `This action updates a #${id} spa`;
+  async update(id: number, updateSpaDto: UpdateSpaDto) {
+    try {
+      const { images } = updateSpaDto;
+
+      delete updateSpaDto.images;
+      await getRepository(Spa)
+        .createQueryBuilder('spa')
+        .update()
+        .set(updateSpaDto)
+        .where('id = :id', { id })
+        .execute();
+      if (images.length > 0) {
+        await getRepository(Image)
+          .createQueryBuilder('image')
+          .delete()
+          .where('spaId = :id', { id })
+          .execute();
+        for (let i = 0; i < images.length; i++) {
+          await getRepository(Image)
+            .createQueryBuilder('image')
+            .insert()
+            .values({ image_url: images[i], spa: id })
+            .execute();
+        }
+      }
+      return {
+        statusCode: HttpStatus.ACCEPTED,
+        message: 'Update Hotel Successfully !',
+      };
+    } catch (error) {
+      return {
+        statusCode: HttpStatus.ACCEPTED,
+        message: 'Update Hotel Fail !',
+      };
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} spa`;
+  async remove(id: number) {
+    try {
+      await getRepository(Spa)
+        .createQueryBuilder()
+        .delete()
+        .where('id = :id', { id })
+        .execute();
+      return {
+        statusCode: HttpStatus.ACCEPTED,
+        message: 'Delete Spa Successfully !',
+      };
+    } catch (error) {
+      return {
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: 'Delete Spa Fail !',
+      };
+    }
   }
 }

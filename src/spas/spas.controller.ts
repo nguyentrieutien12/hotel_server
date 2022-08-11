@@ -35,12 +35,14 @@ export class SpasController {
   }
 
   @Patch(':id')
+  @UsePipes(new ValidationPipe({ transform: true }))
   update(@Param('id') id: string, @Body() updateSpaDto: UpdateSpaDto) {
+    console.log(updateSpaDto);
     return this.spasService.update(+id, updateSpaDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.spasService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.spasService.remove(+id);
   }
 }

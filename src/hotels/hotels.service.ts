@@ -76,6 +76,7 @@ export class HotelsService {
       .leftJoinAndSelect('hotel.spas', 'spa', 'hotel.id = spa.hotelId')
       .leftJoinAndMapMany('spa.images', Image, 'image', 'spa.id = image.spaId')
       .where('spa.hotelId = :id', { id })
+      .orderBy('spa.id', 'DESC')
       .getMany();
   }
 

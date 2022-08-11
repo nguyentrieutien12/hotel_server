@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { TreatmentsService } from './treatments.service';
 import { CreateTreatmentDto } from './dto/create-treatment.dto';
 import { UpdateTreatmentDto } from './dto/update-treatment.dto';
@@ -8,8 +18,9 @@ export class TreatmentsController {
   constructor(private readonly treatmentsService: TreatmentsService) {}
 
   @Post()
-  create(@Body() createTreatmentDto: CreateTreatmentDto) {
-    return this.treatmentsService.create(createTreatmentDto);
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async create(@Body() createTreatmentDto: CreateTreatmentDto) {
+    return await this.treatmentsService.create(createTreatmentDto);
   }
 
   @Get()
@@ -23,7 +34,10 @@ export class TreatmentsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTreatmentDto: UpdateTreatmentDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateTreatmentDto: UpdateTreatmentDto,
+  ) {
     return this.treatmentsService.update(+id, updateTreatmentDto);
   }
 

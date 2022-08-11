@@ -1,3 +1,4 @@
+import { Treatment } from 'src/treatments/entities/treatment.entity';
 import { Account } from 'src/accounts/entities/account.entity';
 import { Hotel } from 'src/hotels/entities/hotel.entity';
 import { Spa } from 'src/spas/entities/spa.entity';
@@ -24,6 +25,11 @@ export class Image {
     onUpdate: 'CASCADE',
   })
   spa: number;
+  @ManyToOne(() => Treatment, (treatment) => treatment.images, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  treatment: number;
   @OneToOne(() => Account)
   account: Account;
 }
