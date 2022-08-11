@@ -18,7 +18,6 @@ export class Spa {
   spa_description: string;
   @ManyToOne(() => Hotel, (hotel) => hotel.spas)
   hotel: Hotel;
-
   @OneToMany(() => Treatment, (treatment) => treatment.spa)
   treatments: Treatment[];
   @OneToMany(() => Image, (image) => image.spa)

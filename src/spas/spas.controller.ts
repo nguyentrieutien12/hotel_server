@@ -25,8 +25,8 @@ export class SpasController {
   }
 
   @Get()
-  findAll() {
-    return this.spasService.findAll();
+  async findAll() {
+    return await this.spasService.findAll();
   }
 
   @Get(':id')

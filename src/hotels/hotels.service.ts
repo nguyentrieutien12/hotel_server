@@ -7,6 +7,7 @@ import { Image } from 'src/image/entities/image.entity';
 var QRCode = require('qrcode');
 import { link } from 'src/contains/port.contain';
 import { Qrcode } from 'src/qrcode/entities/qrcode.entity';
+import { Spa } from 'src/spas/entities/spa.entity';
 console.log(process.env.PORT);
 @Injectable()
 export class HotelsService {
@@ -69,8 +70,13 @@ export class HotelsService {
       .getMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} hotel`;
+  async findOne(id: number) {
+    return await getRepository(Hotel)
+      .createQueryBuilder('hotel')
+      .leftJoinAndSelect('hotel.spas', 'spa', 'hotel.id = spa.hotelId')
+      .leftJoinAndMapMany('spa.images', Image, 'image', 'spa.id = image.spaId')
+      .where('spa.hotelId = :id', { id })
+      .getMany();
   }
 
   async update(id: number, updateHotelDto: UpdateHotelDto) {
