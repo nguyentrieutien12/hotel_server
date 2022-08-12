@@ -42,7 +42,7 @@ export class TreatmentsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.treatmentsService.remove(+id);
   }
 }

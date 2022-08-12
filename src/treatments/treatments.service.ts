@@ -52,7 +52,22 @@ export class TreatmentsService {
     return `This action updates a #${id} treatment`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} treatment`;
+  async remove(id: number) {
+    try {
+      await getRepository(Treatment)
+        .createQueryBuilder()
+        .delete()
+        .where('id = :id', { id })
+        .execute();
+      return {
+        statusCode: HttpStatus.ACCEPTED,
+        message: 'Delete Treatment Successfully !',
+      };
+    } catch (error) {
+      return {
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: 'Delete Treatment Fail !',
+      };
+    }
   }
 }

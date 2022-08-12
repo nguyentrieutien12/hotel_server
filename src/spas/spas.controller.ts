@@ -30,8 +30,8 @@ export class SpasController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.spasService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.spasService.findOne(+id);
   }
 
   @Patch(':id')

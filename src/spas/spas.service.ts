@@ -42,8 +42,23 @@ export class SpasService {
     return `This action returns all spas`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} spa`;
+  async findOne(id: number) {
+    return await getRepository(Spa)
+      .createQueryBuilder('spa')
+      .leftJoinAndSelect(
+        'spa.treatments',
+        'treatment',
+        'spa.id = treatment.spaId',
+      )
+      .leftJoinAndMapMany(
+        'treatment.images',
+        Image,
+        'image',
+        'treatment.id = image.treatmentId',
+      )
+      .where('treatment.spaId = :id', { id })
+      .orderBy('treatment.id', 'DESC')
+      .getMany();
   }
 
   async update(id: number, updateSpaDto: UpdateSpaDto) {
