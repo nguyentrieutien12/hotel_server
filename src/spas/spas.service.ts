@@ -64,7 +64,6 @@ export class SpasService {
   async update(id: number, updateSpaDto: UpdateSpaDto) {
     try {
       const { images } = updateSpaDto;
-
       delete updateSpaDto.images;
       await getRepository(Spa)
         .createQueryBuilder('spa')

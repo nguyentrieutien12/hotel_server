@@ -27,11 +27,14 @@ export class HotelsController {
     return await this.hotelsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.hotelsService.findOne(+id);
+  @Get('spa/:id')
+  findOneSpa(@Param('id') id: string) {
+    return this.hotelsService.findOneSpa(+id);
   }
-
+  @Get('restaurant/:id')
+  findOneRestaurant(@Param('id') id: string) {
+    return this.hotelsService.findOneRestaurant(+id);
+  }
   @Patch(':id')
   @UsePipes(new ValidationPipe({ transform: true }))
   async update(

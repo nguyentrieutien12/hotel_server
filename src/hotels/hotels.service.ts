@@ -1,3 +1,4 @@
+import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
 import { getRepository } from 'typeorm';
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { CreateHotelDto } from './dto/create-hotel.dto';
@@ -69,8 +70,25 @@ export class HotelsService {
       .orderBy('hotel.id', 'DESC')
       .getMany();
   }
-
-  async findOne(id: number) {
+  async findOneRestaurant(id: number) {
+    return await getRepository(Hotel)
+      .createQueryBuilder('hotel')
+      .leftJoinAndSelect(
+        'hotel.restaurants',
+        'restaurant',
+        'hotel.id = restaurant.hotelId',
+      )
+      .leftJoinAndMapMany(
+        'restaurant.images',
+        Image,
+        'image',
+        'restaurant.id = image.restaurantId',
+      )
+      .where('restaurant.hotelId = :id', { id })
+      .orderBy('restaurant.id', 'DESC')
+      .getMany();
+  }
+  async findOneSpa(id: number) {
     return await getRepository(Hotel)
       .createQueryBuilder('hotel')
       .leftJoinAndSelect('hotel.spas', 'spa', 'hotel.id = spa.hotelId')

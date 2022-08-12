@@ -4,7 +4,6 @@ import { Injectable, HttpStatus } from '@nestjs/common';
 import { CreateTreatmentDto } from './dto/create-treatment.dto';
 import { UpdateTreatmentDto } from './dto/update-treatment.dto';
 import { Image } from 'src/image/entities/image.entity';
-
 @Injectable()
 export class TreatmentsService {
   async create(createTreatmentDto: CreateTreatmentDto) {

@@ -1,5 +1,6 @@
 import { Dish } from 'src/dishes/entities/dish.entity';
 import { Hotel } from 'src/hotels/entities/hotel.entity';
+import { Image } from 'src/image/entities/image.entity';
 import { Treatment } from 'src/treatments/entities/treatment.entity';
 import {
   Entity,
@@ -20,4 +21,6 @@ export class Restaurant {
   hotel: Hotel;
   @OneToMany(() => Dish, (dish) => dish.restaurant)
   dishs: Dish[];
+  @OneToMany(() => Image, (image) => image.restaurant)
+  images: string[];
 }
