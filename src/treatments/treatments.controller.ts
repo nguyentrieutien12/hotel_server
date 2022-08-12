@@ -34,7 +34,8 @@ export class TreatmentsController {
   }
 
   @Patch(':id')
-  update(
+  @UsePipes(new ValidationPipe({ transform: true }))
+ async  update(
     @Param('id') id: string,
     @Body() updateTreatmentDto: UpdateTreatmentDto,
   ) {

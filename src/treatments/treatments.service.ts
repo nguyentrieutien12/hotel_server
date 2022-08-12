@@ -48,8 +48,41 @@ export class TreatmentsService {
     return `This action returns a #${id} treatment`;
   }
 
-  update(id: number, updateTreatmentDto: UpdateTreatmentDto) {
-    return `This action updates a #${id} treatment`;
+  async update(id: number, updateTreatmentDto: UpdateTreatmentDto) {
+    try {
+      const { images } = updateTreatmentDto;
+
+      delete updateTreatmentDto.images;
+      await getRepository(Treatment)
+        .createQueryBuilder('spa')
+        .update()
+        .set(updateTreatmentDto)
+        .where('id = :id', { id })
+        .execute();
+      if (images.length > 0) {
+        await getRepository(Image)
+          .createQueryBuilder('image')
+          .delete()
+          .where('treatmentId = :id', { id })
+          .execute();
+        for (let i = 0; i < images.length; i++) {
+          await getRepository(Image)
+            .createQueryBuilder('image')
+            .insert()
+            .values({ image_url: images[i], treatment: id })
+            .execute();
+        }
+      }
+      return {
+        statusCode: HttpStatus.ACCEPTED,
+        message: 'Update Hotel Successfully !',
+      };
+    } catch (error) {
+      return {
+        statusCode: HttpStatus.ACCEPTED,
+        message: 'Update Hotel Fail !',
+      };
+    }
   }
 
   async remove(id: number) {
