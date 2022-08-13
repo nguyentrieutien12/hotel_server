@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { DishesService } from './dishes.service';
 import { CreateDishDto } from './dto/create-dish.dto';
 import { UpdateDishDto } from './dto/update-dish.dto';
@@ -8,6 +18,7 @@ export class DishesController {
   constructor(private readonly dishesService: DishesService) {}
 
   @Post()
+  @UsePipes(new ValidationPipe({ transform: true }))
   create(@Body() createDishDto: CreateDishDto) {
     return this.dishesService.create(createDishDto);
   }
@@ -18,8 +29,8 @@ export class DishesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.dishesService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.dishesService.findOne(+id);
   }
 
   @Patch(':id')

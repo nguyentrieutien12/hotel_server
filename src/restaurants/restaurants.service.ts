@@ -46,11 +46,59 @@ export class RestaurantsService {
     return `This action returns a #${id} restaurant`;
   }
 
-  update(id: number, updateRestaurantDto: UpdateRestaurantDto) {
-    return `This action updates a #${id} restaurant`;
+  async update(id: number, updateRestaurantDto: UpdateRestaurantDto) {
+    try {
+      const { images } = updateRestaurantDto;
+      delete updateRestaurantDto.images;
+      await getRepository(Restaurant)
+        .createQueryBuilder('spa')
+        .update()
+        .set(updateRestaurantDto)
+        .where('id = :id', { id })
+        .execute();
+      if (images.length > 0) {
+        await getRepository(Image)
+          .createQueryBuilder('image')
+          .delete()
+          .where('restaurantId = :id', { id })
+          .execute();
+        for (let i = 0; i < images.length; i++) {
+          await getRepository(Image)
+            .createQueryBuilder('image')
+            .insert()
+            .values({ image_url: images[i], restaurant: id })
+            .execute();
+        }
+      }
+      return {
+        statusCode: HttpStatus.ACCEPTED,
+        message: 'Update Hotel Successfully !',
+      };
+    } catch (error) {
+      return {
+        statusCode: HttpStatus.ACCEPTED,
+        message: 'Update Hotel Fail !',
+      };
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} restaurant`;
+  async remove(id: number) {
+    try {
+      await getRepository(Restaurant)
+        .createQueryBuilder('restaurant')
+        .delete()
+        .where('id = :id', { id })
+        .execute();
+
+      return {
+        message: 'Delete Restaurant SuccessFully !',
+        statusCode: HttpStatus.ACCEPTED,
+      };
+    } catch (error) {
+      return {
+        message: 'Delete Restaurant Fail !',
+        statusCode: HttpStatus.BAD_REQUEST,
+      };
+    }
   }
 }

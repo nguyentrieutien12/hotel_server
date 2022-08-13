@@ -1,3 +1,4 @@
+import { Dish } from './../../dishes/entities/dish.entity';
 import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
 import { Treatment } from 'src/treatments/entities/treatment.entity';
 import { Account } from 'src/accounts/entities/account.entity';
@@ -36,6 +37,11 @@ export class Image {
     onUpdate: 'CASCADE',
   })
   restaurant: number;
+  @ManyToOne(() => Dish, (dish) => dish.images, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  dish: number;
   @OneToOne(() => Account)
   account: Account;
 }

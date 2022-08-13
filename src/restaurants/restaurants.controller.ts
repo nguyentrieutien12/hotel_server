@@ -34,6 +34,7 @@ export class RestaurantsController {
   }
 
   @Patch(':id')
+  @UsePipes(new ValidationPipe({ transform: true }))
   update(
     @Param('id') id: string,
     @Body() updateRestaurantDto: UpdateRestaurantDto,
@@ -42,7 +43,7 @@ export class RestaurantsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.restaurantsService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.restaurantsService.remove(+id);
   }
 }

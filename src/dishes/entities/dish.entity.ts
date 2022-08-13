@@ -1,4 +1,5 @@
 import { Hotel } from 'src/hotels/entities/hotel.entity';
+import { Image } from 'src/image/entities/image.entity';
 import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
 import { Treatment } from 'src/treatments/entities/treatment.entity';
 import {
@@ -20,6 +21,8 @@ export class Dish {
   dishe_price: number;
   @ManyToOne(() => Restaurant, (restaurant) => restaurant.dishs)
   restaurant: Restaurant;
+  @OneToMany(() => Image, (image) => image.dish)
+  images: string[];
   //   @OneToMany(() => Treatment, (treatment) => treatment.spa)
   //   treatments: Treatment[];
 }
