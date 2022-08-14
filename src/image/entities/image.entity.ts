@@ -11,6 +11,8 @@ import {
   ManyToOne,
   OneToOne,
 } from 'typeorm';
+import { Gym } from 'src/gyms/entities/gym.entity';
+import { Workout } from 'src/workouts/entities/workout.entity';
 @Entity()
 export class Image {
   @PrimaryGeneratedColumn()
@@ -42,6 +44,16 @@ export class Image {
     onUpdate: 'CASCADE',
   })
   dish: number;
+  @ManyToOne(() => Gym, (gym) => gym.images, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  gym: number;
+  @ManyToOne(() => Workout, (workout) => workout.images, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  workout: number;
   @OneToOne(() => Account)
   account: Account;
 }

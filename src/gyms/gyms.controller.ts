@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { GymsService } from './gyms.service';
 import { CreateGymDto } from './dto/create-gym.dto';
 import { UpdateGymDto } from './dto/update-gym.dto';
@@ -8,8 +18,10 @@ export class GymsController {
   constructor(private readonly gymsService: GymsService) {}
 
   @Post()
-  create(@Body() createGymDto: CreateGymDto) {
-    return this.gymsService.create(createGymDto);
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async create(@Body() createGymDto: CreateGymDto) {
+    console.log(createGymDto);
+    return await this.gymsService.create(createGymDto);
   }
 
   @Get()
@@ -18,17 +30,17 @@ export class GymsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.gymsService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateGymDto: UpdateGymDto) {
-    return this.gymsService.update(+id, updateGymDto);
+  async update(@Param('id') id: string, @Body() updateGymDto: UpdateGymDto) {
+    return await this.gymsService.update(+id, updateGymDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.gymsService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.gymsService.remove(+id);
   }
 }

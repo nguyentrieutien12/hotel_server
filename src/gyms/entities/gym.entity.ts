@@ -7,6 +7,7 @@ import {
   ManyToOne,
   OneToMany,
 } from 'typeorm';
+import { Image } from 'src/image/entities/image.entity';
 @Entity()
 export class Gym {
   @PrimaryGeneratedColumn()
@@ -19,4 +20,6 @@ export class Gym {
   hotel: Hotel;
   @OneToMany(() => Workout, (workout) => workout.gym)
   workouts: Workout[];
+  @OneToMany(() => Image, (image) => image.gym)
+  images: string[];
 }

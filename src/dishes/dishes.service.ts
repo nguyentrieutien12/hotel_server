@@ -64,11 +64,58 @@ export class DishesService {
       .getMany();
   }
 
-  update(id: number, updateDishDto: UpdateDishDto) {
-    return `This action updates a #${id} dish`;
+  async update(id: number, updateDishDto: UpdateDishDto) {
+    try {
+      const { images } = updateDishDto;
+      delete updateDishDto.images;
+      await getRepository(Dish)
+        .createQueryBuilder('dish')
+        .update()
+        .set(updateDishDto)
+        .where('id = :id', { id })
+        .execute();
+      if (images.length > 0) {
+        await getRepository(Image)
+          .createQueryBuilder('image')
+          .delete()
+          .where('dishId = :id', { id })
+          .execute();
+        for (let i = 0; i < images.length; i++) {
+          await getRepository(Image)
+            .createQueryBuilder('image')
+            .insert()
+            .values({ image_url: images[i], dish: id })
+            .execute();
+        }
+      }
+      return {
+        statusCode: HttpStatus.ACCEPTED,
+        message: 'Update Hotel Successfully !',
+      };
+    } catch (error) {
+      return {
+        statusCode: HttpStatus.ACCEPTED,
+        message: 'Update Hotel Fail !',
+      };
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} dish`;
+  async remove(id: number) {
+    try {
+      await getRepository(Dish)
+        .createQueryBuilder()
+        .delete()
+        .where('id = :id', { id })
+        .execute();
+      return {
+        statusCode: HttpStatus.ACCEPTED,
+        message: 'Delete Dish Successfully !',
+      };
+    } catch (error) {
+      return {
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: 'Delete Dish Fail !',
+      };
+    }
   }
 }

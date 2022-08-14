@@ -37,7 +37,6 @@ export class SpasController {
   @Patch(':id')
   @UsePipes(new ValidationPipe({ transform: true }))
   update(@Param('id') id: string, @Body() updateSpaDto: UpdateSpaDto) {
-    console.log(updateSpaDto);
     return this.spasService.update(+id, updateSpaDto);
   }
 

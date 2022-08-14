@@ -34,12 +34,12 @@ export class DishesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDishDto: UpdateDishDto) {
+  async update(@Param('id') id: string, @Body() updateDishDto: UpdateDishDto) {
     return this.dishesService.update(+id, updateDishDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.dishesService.remove(+id);
   }
 }

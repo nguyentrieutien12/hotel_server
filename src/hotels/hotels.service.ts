@@ -88,6 +88,22 @@ export class HotelsService {
       .orderBy('restaurant.id', 'DESC')
       .getMany();
   }
+  async findOneGym(id: number) {
+    try {
+      return await getRepository(Hotel)
+        .createQueryBuilder('hotel')
+        .leftJoinAndSelect('hotel.gyms', 'gym', 'hotel.id = gym.hotelId')
+        .leftJoinAndMapMany(
+          'gym.images',
+          Image,
+          'image',
+          'gym.id = image.gymId',
+        )
+        .where('gym.hotelId = :id', { id })
+        .orderBy('gym.id', 'DESC')
+        .getMany();
+    } catch (error) {}
+  }
   async findOneSpa(id: number) {
     return await getRepository(Hotel)
       .createQueryBuilder('hotel')
