@@ -41,7 +41,6 @@ export class SpasService {
   findAll() {
     return `This action returns all spas`;
   }
-
   async findOne(id: number) {
     return await getRepository(Spa)
       .createQueryBuilder('spa')

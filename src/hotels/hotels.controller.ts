@@ -39,6 +39,10 @@ export class HotelsController {
   findOneGym(@Param('id') id: string) {
     return this.hotelsService.findOneGym(+id);
   }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.hotelsService.findOne(+id);
+  }
   @Patch(':id')
   @UsePipes(new ValidationPipe({ transform: true }))
   async update(

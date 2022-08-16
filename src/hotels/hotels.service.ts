@@ -1,4 +1,3 @@
-import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
 import { getRepository } from 'typeorm';
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { CreateHotelDto } from './dto/create-hotel.dto';
@@ -8,7 +7,6 @@ import { Image } from 'src/image/entities/image.entity';
 var QRCode = require('qrcode');
 import { link } from 'src/contains/port.contain';
 import { Qrcode } from 'src/qrcode/entities/qrcode.entity';
-import { Spa } from 'src/spas/entities/spa.entity';
 console.log(process.env.PORT);
 @Injectable()
 export class HotelsService {
@@ -56,7 +54,20 @@ export class HotelsService {
       };
     }
   }
-
+  async findOne(id: number) {
+    try {
+      const restaurants = await this.findOneRestaurant(id);
+      // const gyms = await this.findOneGym(id);
+      // const spas = await this.findOneSpa(id);
+      return {
+        restaurants,
+        // gyms,
+        // spas,
+      };
+    } catch (error) {
+      console.log(error);
+    }
+  }
   async findAll() {
     return await getRepository(Hotel)
       .createQueryBuilder('hotel')
@@ -84,8 +95,8 @@ export class HotelsService {
         'image',
         'restaurant.id = image.restaurantId',
       )
-      .where('restaurant.hotelId = :id', { id })
-      .orderBy('restaurant.id', 'DESC')
+      .where('hotel.id = :id', { id })
+      .orderBy('hotel.id', 'DESC')
       .getMany();
   }
   async findOneGym(id: number) {
@@ -99,8 +110,8 @@ export class HotelsService {
           'image',
           'gym.id = image.gymId',
         )
-        .where('gym.hotelId = :id', { id })
-        .orderBy('gym.id', 'DESC')
+        .where('hotel.id = :id', { id })
+        .orderBy('hotel.id', 'DESC')
         .getMany();
     } catch (error) {}
   }
@@ -109,8 +120,8 @@ export class HotelsService {
       .createQueryBuilder('hotel')
       .leftJoinAndSelect('hotel.spas', 'spa', 'hotel.id = spa.hotelId')
       .leftJoinAndMapMany('spa.images', Image, 'image', 'spa.id = image.spaId')
-      .where('spa.hotelId = :id', { id })
-      .orderBy('spa.id', 'DESC')
+      .where('hotel.id = :id', { id })
+      .orderBy('hotel.id', 'DESC')
       .getMany();
   }
 
