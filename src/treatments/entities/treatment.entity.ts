@@ -18,8 +18,14 @@ export class Treatment {
   treatment_description: string;
   @Column()
   treatment_price: number;
-  @ManyToOne(() => Spa, (spa) => spa.treatments)
+  @ManyToOne(() => Spa, (spa) => spa.treatments, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   spa: Spa;
-  @OneToMany(() => Image, (image) => image.treatment)
+  @OneToMany(() => Image, (image) => image.treatment, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   images: string[];
 }

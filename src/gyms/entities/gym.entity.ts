@@ -16,10 +16,19 @@ export class Gym {
   gym_name: string;
   @Column()
   gym_description: string;
-  @ManyToOne(() => Hotel, (hotel) => hotel.gyms)
+  @ManyToOne(() => Hotel, (hotel) => hotel.gyms, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   hotel: Hotel;
-  @OneToMany(() => Workout, (workout) => workout.gym)
+  @OneToMany(() => Workout, (workout) => workout.gym, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   workouts: Workout[];
-  @OneToMany(() => Image, (image) => image.gym)
+  @OneToMany(() => Image, (image) => image.gym, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   images: string[];
 }

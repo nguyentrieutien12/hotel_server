@@ -14,7 +14,10 @@ export class Qrcode {
   id: number;
   @Column({ type: 'text' })
   qr_link: string;
-  @OneToOne(() => Hotel)
+  @OneToOne(() => Hotel, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn()
   hotel: Hotel;
 }

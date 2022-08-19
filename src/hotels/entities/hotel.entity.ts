@@ -24,13 +24,25 @@ export class Hotel {
   hotel_email: string;
   @Column()
   hotel_address: string;
-  @OneToMany(() => Spa, (spa) => spa.hotel)
+  @OneToMany(() => Spa, (spa) => spa.hotel, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   spas: Spa[];
-  @OneToMany(() => Restaurant, (restaurant) => restaurant.hotel)
+  @OneToMany(() => Restaurant, (restaurant) => restaurant.hotel, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   restaurants: Restaurant[];
-  @OneToMany(() => Gym, (gym) => gym.hotel)
+  @OneToMany(() => Gym, (gym) => gym.hotel, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   gyms: Gym[];
-  @OneToMany(() => SeftCare, (seftcare) => seftcare.hotel)
+  @OneToMany(() => SeftCare, (seftcare) => seftcare.hotel, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   seftcares: SeftCare[];
   @OneToMany(() => Image, (image) => image.hotel, {
     onDelete: 'CASCADE',

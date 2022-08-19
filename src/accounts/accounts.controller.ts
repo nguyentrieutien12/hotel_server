@@ -21,6 +21,7 @@ import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { Roles } from 'src/decorator/roles.decorator';
 import { Role } from 'src/enums/role.enum';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 @Controller('accounts')
 export class AccountsController {
   constructor(
@@ -37,6 +38,7 @@ export class AccountsController {
   ) {
     return await this.accountsService.create(createAccountDto);
   }
+  @UseGuards(JwtAuthGuard)
   @Get()
   @Roles(Role.ADMIN)
   async findAll() {
@@ -68,7 +70,6 @@ export class AccountsController {
       message: 'Login Successfully!!',
     };
   }
-
   //   @Post('/profile/:id')
   //   @Roles(Role.ADMIN)
   //   getProfile(@Request() req) {

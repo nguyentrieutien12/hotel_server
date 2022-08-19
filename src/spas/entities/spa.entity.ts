@@ -16,10 +16,19 @@ export class Spa {
   spa_name: string;
   @Column()
   spa_description: string;
-  @ManyToOne(() => Hotel, (hotel) => hotel.spas)
+  @ManyToOne(() => Hotel, (hotel) => hotel.spas, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   hotel: Hotel;
-  @OneToMany(() => Treatment, (treatment) => treatment.spa)
+  @OneToMany(() => Treatment, (treatment) => treatment.spa, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   treatments: Treatment[];
-  @OneToMany(() => Image, (image) => image.spa)
+  @OneToMany(() => Image, (image) => image.spa, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   images: Image[];
 }

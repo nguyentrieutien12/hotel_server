@@ -19,9 +19,15 @@ export class Workout {
   workout_description: string;
   @Column()
   workout_price: number;
-  @ManyToOne(() => Gym, (gym) => gym.workouts)
+  @ManyToOne(() => Gym, (gym) => gym.workouts, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   gym: Gym[];
-  @OneToMany(() => Image, (image) => image.workout)
+  @OneToMany(() => Image, (image) => image.workout, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   images: string[];
   //   @OneToMany(() => Treatment, (treatment) => treatment.spa)
   //   treatments: Treatment[];

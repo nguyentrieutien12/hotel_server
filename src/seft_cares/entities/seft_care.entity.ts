@@ -16,7 +16,10 @@ export class SeftCare {
   seftcare_description: string;
   @Column()
   seftcare_price: number;
-  @ManyToOne(() => Hotel, (hotel) => hotel.seftcares)
+  @ManyToOne(() => Hotel, (hotel) => hotel.seftcares, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   hotel: Hotel;
   //   @OneToMany(() => Treatment, (treatment) => treatment.spa)
   //   treatments: Treatment[];
