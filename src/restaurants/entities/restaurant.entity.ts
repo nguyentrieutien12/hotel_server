@@ -17,10 +17,19 @@ export class Restaurant {
   restaurant_name: string;
   @Column()
   restaurant_description: string;
-  @ManyToOne(() => Hotel, (hotel) => hotel.restaurants)
+  @ManyToOne(() => Hotel, (hotel) => hotel.restaurants, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   hotel: Hotel;
-  @OneToMany(() => Dish, (dish) => dish.restaurant)
+  @OneToMany(() => Dish, (dish) => dish.restaurant, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   dishs: Dish[];
-  @OneToMany(() => Image, (image) => image.restaurant)
+  @OneToMany(() => Image, (image) => image.restaurant, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   images: string[];
 }

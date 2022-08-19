@@ -23,7 +23,10 @@ export class Account {
   sex: string;
   @Column()
   password: string;
-  @OneToOne(() => Role)
+  @OneToOne(() => Role, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn()
-  role: Role;
+  role: any = 2;
 }

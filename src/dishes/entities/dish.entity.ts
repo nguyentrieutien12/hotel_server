@@ -19,9 +19,15 @@ export class Dish {
   dishe_description: string;
   @Column()
   dishe_price: number;
-  @ManyToOne(() => Restaurant, (restaurant) => restaurant.dishs)
+  @ManyToOne(() => Restaurant, (restaurant) => restaurant.dishs, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   restaurant: Restaurant;
-  @OneToMany(() => Image, (image) => image.dish)
+  @OneToMany(() => Image, (image) => image.dish, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   images: string[];
   //   @OneToMany(() => Treatment, (treatment) => treatment.spa)
   //   treatments: Treatment[];
