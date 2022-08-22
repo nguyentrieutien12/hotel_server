@@ -44,6 +44,7 @@ export class SpasService {
   async findOne(id: number) {
     return await getRepository(Spa)
       .createQueryBuilder('spa')
+      .leftJoinAndMapOne('spa.image', Image, 'images', 'spa.id = images.spaId')
       .leftJoinAndSelect(
         'spa.treatments',
         'treatment',

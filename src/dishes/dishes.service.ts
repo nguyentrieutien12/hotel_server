@@ -48,6 +48,12 @@ export class DishesService {
   async findOne(id: number) {
     return await getRepository(Restaurant)
       .createQueryBuilder('restaurant')
+      .leftJoinAndMapOne(
+        'restaurant.image',
+        Image,
+        'image',
+        'restaurant.id = image.restaurantId',
+      )
       .leftJoinAndSelect(
         'restaurant.dishs',
         'dish',
@@ -56,8 +62,8 @@ export class DishesService {
       .leftJoinAndMapMany(
         'dish.images',
         Image,
-        'image',
-        'dish.id = image.dishId',
+        'images',
+        'dish.id = images.dishId',
       )
       .where('dish.restaurantId = :id', { id })
       .orderBy('restaurant.id', 'DESC')
