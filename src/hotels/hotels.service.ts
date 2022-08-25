@@ -56,14 +56,8 @@ export class HotelsService {
   }
   async findOne(id: number) {
     try {
-      const restaurants = await this.findOneRestaurant(id);
-      // const gyms = await this.findOneGym(id);
-      // const spas = await this.findOneSpa(id);
-      return {
-        restaurants,
-        // gyms,
-        // spas,
-      };
+      return await this.findOneRestaurant(id);
+  
     } catch (error) {
       console.log(error);
     }

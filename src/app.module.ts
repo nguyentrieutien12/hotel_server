@@ -19,6 +19,9 @@ import { SeftCaresModule } from './seft_cares/seft_cares.module';
 import { FileModule } from './file/file.module';
 import { ImageModule } from './image/image.module';
 import { QrcodeModule } from './qrcode/qrcode.module';
+import { RecoveryModule } from './recovery/recovery.module';
+import { BodyRecoveryModule } from './body_recovery/body_recovery.module';
+import { VideoModule } from './video/video.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -36,6 +39,9 @@ import { QrcodeModule } from './qrcode/qrcode.module';
     FileModule,
     ImageModule,
     QrcodeModule,
+    RecoveryModule,
+    BodyRecoveryModule,
+    VideoModule,
   ],
   controllers: [AppController],
   providers: [
