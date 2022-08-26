@@ -67,8 +67,24 @@ export class BodyRecoveryService {
       .getMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} bodyRecovery`;
+  async findOne(id: number) {
+    return await getRepository(BodyRecovery)
+      .createQueryBuilder('body_recovery')
+      .innerJoinAndSelect('body_recovery.recovery', 'recovery')
+      .leftJoinAndMapOne(
+        'body_recovery.image',
+        Image,
+        'image',
+        'body_recovery.id = image.bodyRecoveryId',
+      )
+      .leftJoinAndMapOne(
+        'body_recovery.video',
+        Video,
+        'video',
+        'body_recovery.id = video.bodyRecoveryId',
+      )
+      .where('body_recovery.id = :id', { id })
+      .getOne();
   }
 
   async update(id: number, updateBodyRecoveryDto: UpdateBodyRecoveryDto) {

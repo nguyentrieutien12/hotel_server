@@ -29,8 +29,8 @@ export class BodyRecoveryController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.bodyRecoveryService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.bodyRecoveryService.findOne(+id);
   }
 
   @Patch(':id')
