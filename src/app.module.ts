@@ -22,6 +22,7 @@ import { QrcodeModule } from './qrcode/qrcode.module';
 import { RecoveryModule } from './recovery/recovery.module';
 import { BodyRecoveryModule } from './body_recovery/body_recovery.module';
 import { VideoModule } from './video/video.module';
+import { RecommendModule } from './recommend/recommend.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -42,6 +43,7 @@ import { VideoModule } from './video/video.module';
     RecoveryModule,
     BodyRecoveryModule,
     VideoModule,
+    RecommendModule,
   ],
   controllers: [AppController],
   providers: [

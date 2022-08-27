@@ -1,3 +1,4 @@
+import { Recommend } from './../../recommend/entities/recommend.entity';
 import { Dish } from 'src/dishes/entities/dish.entity';
 import { Hotel } from 'src/hotels/entities/hotel.entity';
 import { Image } from 'src/image/entities/image.entity';
@@ -32,4 +33,9 @@ export class Restaurant {
     onUpdate: 'CASCADE',
   })
   images: string[];
+  @OneToMany(() => Recommend, (recommend) => recommend.restaurant, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  recommends: Restaurant[];
 }

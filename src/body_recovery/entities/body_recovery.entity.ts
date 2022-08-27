@@ -1,3 +1,4 @@
+import { Recommend } from './../../recommend/entities/recommend.entity';
 import { Recovery } from './../../recovery/entities/recovery.entity';
 import {
   Entity,
@@ -21,6 +22,11 @@ export class BodyRecovery {
     onUpdate: 'CASCADE',
   })
   images: Image[];
+  @OneToMany(() => Recommend, (recommend) => recommend.body_recovery, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  recommends: Recommend[];
   @OneToOne(() => Recovery, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
