@@ -9,7 +9,7 @@ import { Gym } from 'src/gyms/entities/gym.entity';
 
 @Injectable()
 export class RecommendService {
-  async create(createRecommendDto: CreateRecommendDto) {
+  async createRes(createRecommendDto: CreateRecommendDto) {
     try {
       const recommend = await getRepository(Recommend)
         .createQueryBuilder('recommend')
@@ -51,7 +51,91 @@ export class RecommendService {
       };
     }
   }
-
+  async createGym(createRecommendDto: CreateRecommendDto) {
+    console.log(createRecommendDto);
+    try {
+      const recommend = await getRepository(Recommend)
+        .createQueryBuilder('recommend')
+        .where('gymId = :gymId', {
+          gymId: createRecommendDto['id'],
+        })
+        .getOne();
+      if (!recommend) {
+        await getRepository(Recommend)
+          .createQueryBuilder('recommend')
+          .insert()
+          .values({
+            gym: createRecommendDto['id'],
+            type: createRecommendDto['type'],
+          })
+          .execute();
+        return {
+          statusCode: HttpStatus.CREATED,
+          message: `Save Recomment Successfully !`,
+        };
+      } else {
+        await getRepository(Recommend)
+          .createQueryBuilder('recommend')
+          .delete()
+          .where('gymId = :gymId', {
+            gymId: createRecommendDto['id'],
+          })
+          .execute();
+        return {
+          statusCode: HttpStatus.CREATED,
+          message: `Unflow Recomment Successfully !`,
+        };
+      }
+    } catch (error) {
+      console.log(error);
+      return {
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: `Save Recomment Fail !`,
+      };
+    }
+  }
+  async createSpa(createRecommendDto: CreateRecommendDto) {
+    try {
+      const recommend = await getRepository(Recommend)
+        .createQueryBuilder('recommend')
+        .where('spaId = :spaId', {
+          spaId: createRecommendDto['id'],
+        })
+        .getOne();
+      if (!recommend) {
+        await getRepository(Recommend)
+          .createQueryBuilder('recommend')
+          .insert()
+          .values({
+            spa: createRecommendDto['id'],
+            type: createRecommendDto['type'],
+          })
+          .execute();
+        return {
+          statusCode: HttpStatus.CREATED,
+          message: `Save Recomment Successfully !`,
+        };
+      } else {
+        await getRepository(Recommend)
+          .createQueryBuilder('recommend')
+          .delete()
+          .where('spaId = :spaId', {
+            spaId: createRecommendDto['id'],
+          })
+          .execute();
+        return {
+          statusCode: HttpStatus.CREATED,
+          message: `Unflow Recomment Successfully !`,
+        };
+      }
+    } catch (error) {
+      console.log(error);
+      return {
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: `Save Recomment Fail !`,
+      };
+    }
+  }
   async findAll() {
     try {
       return await getRepository(Recommend)

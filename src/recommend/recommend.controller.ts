@@ -15,10 +15,17 @@ export class RecommendController {
   constructor(private readonly recommendService: RecommendService) {}
 
   @Post('/restaurant')
-  async create(@Body() createRecommendDto: any) {
-    return await this.recommendService.create(createRecommendDto);
+  async createRes(@Body() createRecommendDto: any) {
+    return await this.recommendService.createRes(createRecommendDto);
   }
-
+  @Post('/gym')
+  async createGym(@Body() createRecommendDto: any) {
+    return await this.recommendService.createGym(createRecommendDto);
+  }
+  @Post('/spa')
+  async createSpa(@Body() createRecommendDto: any) {
+    return await this.recommendService.createSpa(createRecommendDto);
+  }
   @Get()
   async findAll() {
     return await this.recommendService.findAll();
