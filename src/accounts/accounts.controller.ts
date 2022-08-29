@@ -46,7 +46,6 @@ export class AccountsController {
   }
   @Get(':email')
   async findOne(@Param('email') email: string) {
-    console.log('123');
     return await this.accountsService.findOne(email);
   }
 

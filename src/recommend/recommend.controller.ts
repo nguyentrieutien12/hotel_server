@@ -26,6 +26,10 @@ export class RecommendController {
   async createSpa(@Body() createRecommendDto: any) {
     return await this.recommendService.createSpa(createRecommendDto);
   }
+  @Post('/recovery')
+  async createRecovery(@Body() createRecommendDto: any) {
+    return await this.recommendService.createRecovery(createRecommendDto);
+  }
   @Get()
   async findAll() {
     return await this.recommendService.findAll();

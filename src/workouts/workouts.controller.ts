@@ -20,7 +20,6 @@ export class WorkoutsController {
   @Post()
   @UsePipes(new ValidationPipe({ transform: true }))
   async create(@Body() createWorkoutDto: CreateWorkoutDto) {
-    console.log(CreateWorkoutDto);
     return await this.workoutsService.create(createWorkoutDto);
   }
 
@@ -41,6 +40,6 @@ export class WorkoutsController {
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return await  this.workoutsService.remove(+id);
+    return await this.workoutsService.remove(+id);
   }
 }

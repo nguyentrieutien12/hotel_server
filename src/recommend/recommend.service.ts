@@ -1,3 +1,4 @@
+import { BodyRecovery } from './../body_recovery/entities/body_recovery.entity';
 import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
 import { Recommend } from './entities/recommend.entity';
 import { getRepository } from 'typeorm';
@@ -52,7 +53,6 @@ export class RecommendService {
     }
   }
   async createGym(createRecommendDto: CreateRecommendDto) {
-    console.log(createRecommendDto);
     try {
       const recommend = await getRepository(Recommend)
         .createQueryBuilder('recommend')
@@ -136,6 +136,48 @@ export class RecommendService {
       };
     }
   }
+  async createRecovery(createRecommendDto: CreateRecommendDto) {
+    try {
+      const recovery = await getRepository(Recommend)
+        .createQueryBuilder('recommend')
+        .where('bodyRecoveryId = :bodyRecoveryId', {
+          bodyRecoveryId: createRecommendDto['id'],
+        })
+        .getOne();
+      if (!recovery) {
+        await getRepository(Recommend)
+          .createQueryBuilder('recommend')
+          .insert()
+          .values({
+            body_recovery: createRecommendDto['id'],
+            type: createRecommendDto['type'],
+          })
+          .execute();
+        return {
+          statusCode: HttpStatus.CREATED,
+          message: `Save Recomment Successfully !`,
+        };
+      } else {
+        await getRepository(Recommend)
+          .createQueryBuilder('recommend')
+          .delete()
+          .where('bodyRecoveryId = :bodyRecoveryId', {
+            bodyRecoveryId: createRecommendDto['id'],
+          })
+          .execute();
+        return {
+          statusCode: HttpStatus.CREATED,
+          message: `Unflow Recomment Successfully !`,
+        };
+      }
+    } catch (error) {
+      console.log(error);
+      return {
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: `Save Recomment Fail !`,
+      };
+    }
+  }
   async findAll() {
     try {
       return await getRepository(Recommend)
@@ -157,6 +199,12 @@ export class RecommendService {
           Gym,
           'gyms',
           'gyms.id = recommend.gymId',
+        )
+        .leftJoinAndMapOne(
+          'recommend.recoverys',
+          BodyRecovery,
+          'bodyRecovery',
+          'bodyRecovery.id = recommend.bodyRecoveryId',
         )
         .getMany();
     } catch (error) {}

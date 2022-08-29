@@ -4,7 +4,6 @@ import { extname } from 'path';
 export const storage = diskStorage({
   destination: './uploads',
   filename: (req, file, callback) => {
-    console.log(req.body);
     callback(null, generateFilename(file));
   },
 });

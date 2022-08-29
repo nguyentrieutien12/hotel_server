@@ -7,7 +7,6 @@ import { Image } from 'src/image/entities/image.entity';
 var QRCode = require('qrcode');
 import { link } from 'src/contains/port.contain';
 import { Qrcode } from 'src/qrcode/entities/qrcode.entity';
-console.log(process.env.PORT);
 @Injectable()
 export class HotelsService {
   async create(createHotelDto: CreateHotelDto) {
@@ -57,7 +56,6 @@ export class HotelsService {
   async findOne(id: number) {
     try {
       return await this.findOneRestaurant(id);
-  
     } catch (error) {
       console.log(error);
     }
