@@ -1,8 +1,15 @@
+import { Hotel } from './../../hotels/entities/hotel.entity';
 import { BodyRecovery } from './../../body_recovery/entities/body_recovery.entity';
 import { Gym } from './../../gyms/entities/gym.entity';
 import { Restaurant } from './../../restaurants/entities/restaurant.entity';
 import { Spa } from 'src/spas/entities/spa.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 @Entity()
 export class Recommend {
   @PrimaryGeneratedColumn()
@@ -17,7 +24,6 @@ export class Recommend {
     onUpdate: 'CASCADE',
   })
   restaurant: number;
-
   @ManyToOne(() => Gym, (gym) => gym.recommends, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
@@ -28,6 +34,11 @@ export class Recommend {
     onUpdate: 'CASCADE',
   })
   body_recovery: number;
+  @ManyToOne(() => Hotel, (hotel) => hotel.id, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  hotel: number;
   @Column()
   type: string;
 }

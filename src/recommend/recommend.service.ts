@@ -1,3 +1,4 @@
+import { Hotel } from './../hotels/entities/hotel.entity';
 import { BodyRecovery } from './../body_recovery/entities/body_recovery.entity';
 import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
 import { Recommend } from './entities/recommend.entity';
@@ -7,6 +8,7 @@ import { CreateRecommendDto } from './dto/create-recommend.dto';
 import { UpdateRecommendDto } from './dto/update-recommend.dto';
 import { Spa } from 'src/spas/entities/spa.entity';
 import { Gym } from 'src/gyms/entities/gym.entity';
+import { Image } from 'src/image/entities/image.entity';
 
 @Injectable()
 export class RecommendService {
@@ -25,6 +27,7 @@ export class RecommendService {
           .values({
             restaurant: createRecommendDto['id'],
             type: createRecommendDto['type'],
+            hotel: createRecommendDto['hotel'],
           })
           .execute();
         return {
@@ -67,6 +70,7 @@ export class RecommendService {
           .values({
             gym: createRecommendDto['id'],
             type: createRecommendDto['type'],
+            hotel: createRecommendDto['hotel'],
           })
           .execute();
         return {
@@ -109,6 +113,7 @@ export class RecommendService {
           .values({
             spa: createRecommendDto['id'],
             type: createRecommendDto['type'],
+            hotel: createRecommendDto['hotel'],
           })
           .execute();
         return {
@@ -207,6 +212,77 @@ export class RecommendService {
           'bodyRecovery.id = recommend.bodyRecoveryId',
         )
         .getMany();
+    } catch (error) {}
+  }
+  async getAll() {
+    try {
+      const recommend = await getRepository(Recommend)
+        .createQueryBuilder('recommend')
+        .leftJoinAndMapOne(
+          'recommend.hotel',
+          Hotel,
+          'hotel',
+          'hotel.id = recommend.hotelId',
+        )
+        .leftJoinAndMapOne(
+          'recommend.spa',
+          Spa,
+          'spa',
+          'spa.id = recommend.spaId',
+        )
+        .leftJoinAndMapMany(
+          'recommend.imagesspa',
+          Image,
+          'imageSpa',
+          'imageSpa.spaId = spa.id',
+        )
+
+        .leftJoinAndMapOne(
+          'recommend.restaurant',
+          Restaurant,
+          'restaurant',
+          'restaurant.id = recommend.restaurantId',
+        )
+        .leftJoinAndMapMany(
+          'recommend.imagesrestaurant',
+          Image,
+          'imageRestaurant',
+          'imageRestaurant.restaurantId = restaurant.id',
+        )
+        .leftJoinAndMapOne(
+          'recommend.gym',
+          Gym,
+          'gym',
+          'gym.id = recommend.gymId',
+        )
+        .leftJoinAndMapMany(
+          'recommend.imagesgym',
+          Image,
+          'imageGym',
+          'imageGym.gymId = gym.id',
+        )
+        .getMany();
+
+      const recovery = await getRepository(Recommend)
+        .createQueryBuilder('recommend')
+        .leftJoinAndMapOne(
+          'recommend.recoverys',
+          BodyRecovery,
+          'bodyRecovery',
+          'bodyRecovery.id = recommend.bodyRecoveryId',
+        )
+        .leftJoinAndMapOne(
+          'recommend.image',
+          Image,
+          'image',
+          'image.bodyRecoveryId = recommend.bodyRecoveryId',
+        )
+        .getMany();
+
+      return {
+        recommend,
+        recovery,
+      };
     } catch (error) {}
   }
 

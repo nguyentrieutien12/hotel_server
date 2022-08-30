@@ -34,6 +34,10 @@ export class RecommendController {
   async findAll() {
     return await this.recommendService.findAll();
   }
+  @Get('/all')
+  async getAll() {
+    return await this.recommendService.getAll();
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
