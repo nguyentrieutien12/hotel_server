@@ -43,18 +43,24 @@ export class GymsService {
   }
 
   async findOne(id: number) {
-    return await getRepository(Gym)
-      .createQueryBuilder('gym')
-      .leftJoinAndSelect('gym.workouts', 'workout', 'gym.id = workout.gymId')
-      .leftJoinAndMapMany(
-        'workout.images',
-        Image,
-        'image',
-        'workout.id = image.workoutId',
-      )
-      .where('workout.gymId = :id', { id })
-      .orderBy('workout.id', 'DESC')
-      .getMany();
+    return new Promise(async (res) => {
+      const gyms = await getRepository(Gym)
+        .createQueryBuilder('gym')
+        .leftJoinAndMapOne('gym.image', Image, 'image', 'gym.id = image.gymId')
+        .leftJoinAndSelect('gym.workouts', 'workout', 'gym.id = workout.gymId')
+        .leftJoinAndMapMany(
+          'workout.images',
+          Image,
+          'images',
+          'workout.id = images.workoutId',
+        )
+        .where('workout.gymId = :id', { id })
+        .orderBy('workout.id', 'DESC')
+        .getMany();
+      setTimeout(() => {
+        return res(gyms);
+      }, 2000);
+    });
   }
 
   async update(id: number, updateGymDto: UpdateGymDto) {

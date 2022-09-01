@@ -1,3 +1,4 @@
+import { Recommend } from './../../recommend/entities/recommend.entity';
 import { Hotel } from 'src/hotels/entities/hotel.entity';
 import { Image } from 'src/image/entities/image.entity';
 import { Treatment } from 'src/treatments/entities/treatment.entity';
@@ -26,6 +27,11 @@ export class Spa {
     onUpdate: 'CASCADE',
   })
   treatments: Treatment[];
+  @OneToMany(() => Recommend, (recommend) => recommend.spa, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  recommends: [];
   @OneToMany(() => Image, (image) => image.spa, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',

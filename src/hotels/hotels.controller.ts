@@ -28,20 +28,21 @@ export class HotelsController {
   }
 
   @Get('spa/:id')
-  findOneSpa(@Param('id') id: string) {
-    return this.hotelsService.findOneSpa(+id);
+  async findOneSpa(@Param('id') id: string) {
+    return await this.hotelsService.findOneSpa(+id);
   }
   @Get('restaurant/:id')
-  findOneRestaurant(@Param('id') id: string) {
-    return this.hotelsService.findOneRestaurant(+id);
+  async findOneRestaurant(@Param('id') id: string) {
+    const result = await this.hotelsService.findOneRestaurant(+id);
+    return result;
   }
   @Get('gym/:id')
-  findOneGym(@Param('id') id: string) {
-    return this.hotelsService.findOneGym(+id);
+  async findOneGym(@Param('id') id: string) {
+    return await this.hotelsService.findOneGym(+id);
   }
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.hotelsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.hotelsService.findOne(+id);
   }
   @Patch(':id')
   @UsePipes(new ValidationPipe({ transform: true }))

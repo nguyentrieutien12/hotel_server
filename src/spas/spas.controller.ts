@@ -20,7 +20,6 @@ export class SpasController {
   @Post()
   @UsePipes(new ValidationPipe({ transform: true }))
   async create(@Body() createSpaDto: CreateSpaDto) {
-    console.log(createSpaDto);
     return await this.spasService.create(createSpaDto);
   }
 

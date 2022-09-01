@@ -1,3 +1,4 @@
+import { BodyRecovery } from './../../body_recovery/entities/body_recovery.entity';
 import { Dish } from './../../dishes/entities/dish.entity';
 import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
 import { Treatment } from 'src/treatments/entities/treatment.entity';
@@ -54,6 +55,11 @@ export class Image {
     onUpdate: 'CASCADE',
   })
   workout: number;
+  @ManyToOne(() => BodyRecovery, (bodyRecovery) => bodyRecovery.images, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  body_recovery: number;
   @OneToOne(() => Account)
   account: Account;
 }

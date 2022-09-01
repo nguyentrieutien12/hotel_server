@@ -29,6 +29,11 @@ export class AccountsController {
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
   ) {}
+  @UseGuards(JwtAuthGuard)
+  @Get('auth_token')
+  getProfile(@Request() req) {
+    return req.user;
+  }
   @Post()
   // @UseInterceptors(FilesInterceptor('files', 300, { storage }))
   @UsePipes(new ValidationPipe({ transform: true }))
@@ -46,7 +51,6 @@ export class AccountsController {
   }
   @Get(':email')
   async findOne(@Param('email') email: string) {
-    console.log('123');
     return await this.accountsService.findOne(email);
   }
 
@@ -70,6 +74,7 @@ export class AccountsController {
       message: 'Login Successfully!!',
     };
   }
+
   //   @Post('/profile/:id')
   //   @Roles(Role.ADMIN)
   //   getProfile(@Request() req) {

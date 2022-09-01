@@ -7,7 +7,6 @@ import { Image } from 'src/image/entities/image.entity';
 var QRCode = require('qrcode');
 import { link } from 'src/contains/port.contain';
 import { Qrcode } from 'src/qrcode/entities/qrcode.entity';
-console.log(process.env.PORT);
 @Injectable()
 export class HotelsService {
   async create(createHotelDto: CreateHotelDto) {
@@ -56,14 +55,7 @@ export class HotelsService {
   }
   async findOne(id: number) {
     try {
-      const restaurants = await this.findOneRestaurant(id);
-      // const gyms = await this.findOneGym(id);
-      // const spas = await this.findOneSpa(id);
-      return {
-        restaurants,
-        // gyms,
-        // spas,
-      };
+      return await this.findOneRestaurant(id);
     } catch (error) {
       console.log(error);
     }
@@ -82,37 +74,48 @@ export class HotelsService {
       .getMany();
   }
   async findOneRestaurant(id: number) {
-    return await getRepository(Hotel)
-      .createQueryBuilder('hotel')
-      .leftJoinAndSelect(
-        'hotel.restaurants',
-        'restaurant',
-        'hotel.id = restaurant.hotelId',
-      )
-      .leftJoinAndMapMany(
-        'restaurant.images',
-        Image,
-        'image',
-        'restaurant.id = image.restaurantId',
-      )
-      .where('hotel.id = :id', { id })
-      .orderBy('hotel.id', 'DESC')
-      .getMany();
-  }
-  async findOneGym(id: number) {
-    try {
-      return await getRepository(Hotel)
+    return new Promise(async (res) => {
+      const restaurants = await getRepository(Hotel)
         .createQueryBuilder('hotel')
-        .leftJoinAndSelect('hotel.gyms', 'gym', 'hotel.id = gym.hotelId')
+        .leftJoinAndSelect(
+          'hotel.restaurants',
+          'restaurant',
+          'hotel.id = restaurant.hotelId',
+        )
         .leftJoinAndMapMany(
-          'gym.images',
+          'restaurant.images',
           Image,
           'image',
-          'gym.id = image.gymId',
+          'restaurant.id = image.restaurantId',
         )
         .where('hotel.id = :id', { id })
         .orderBy('hotel.id', 'DESC')
         .getMany();
+      setTimeout(() => {
+        return res(restaurants);
+      }, 2000);
+    });
+  }
+  async findOneGym(id: number) {
+    try {
+      return new Promise(async (res) => {
+        const gyms = await getRepository(Hotel)
+          .createQueryBuilder('hotel')
+          .leftJoinAndSelect('hotel.gyms', 'gym', 'hotel.id = gym.hotelId')
+          .leftJoinAndMapMany(
+            'gym.images',
+            Image,
+            'image',
+            'gym.id = image.gymId',
+          )
+          .where('hotel.id = :id', { id })
+          .orderBy('hotel.id', 'DESC')
+          .getMany();
+
+        setTimeout(() => {
+          return res(gyms);
+        }, 2000);
+      });
     } catch (error) {}
   }
   async findOneSpa(id: number) {

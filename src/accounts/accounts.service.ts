@@ -17,7 +17,6 @@ export class AccountsService {
         };
       }
       createAccountDto.password = await hashPassword(createAccountDto.password);
-      console.log(createAccountDto);
       await getRepository(Account).save(createAccountDto);
       return {
         statusCode: HttpStatus.CREATED,

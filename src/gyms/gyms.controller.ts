@@ -20,7 +20,6 @@ export class GymsController {
   @Post()
   @UsePipes(new ValidationPipe({ transform: true }))
   async create(@Body() createGymDto: CreateGymDto) {
-    console.log(createGymDto);
     return await this.gymsService.create(createGymDto);
   }
 
