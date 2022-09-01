@@ -46,28 +46,33 @@ export class DishesService {
   }
 
   async findOne(id: number) {
-    return await getRepository(Restaurant)
-      .createQueryBuilder('restaurant')
-      .leftJoinAndMapOne(
-        'restaurant.image',
-        Image,
-        'image',
-        'restaurant.id = image.restaurantId',
-      )
-      .leftJoinAndSelect(
-        'restaurant.dishs',
-        'dish',
-        'restaurant.id = dish.restaurantId',
-      )
-      .leftJoinAndMapMany(
-        'dish.images',
-        Image,
-        'images',
-        'dish.id = images.dishId',
-      )
-      .where('dish.restaurantId = :id', { id })
-      .orderBy('restaurant.id', 'DESC')
-      .getMany();
+    return new Promise(async (res) => {
+      const dishes = await getRepository(Restaurant)
+        .createQueryBuilder('restaurant')
+        .leftJoinAndMapOne(
+          'restaurant.image',
+          Image,
+          'image',
+          'restaurant.id = image.restaurantId',
+        )
+        .leftJoinAndSelect(
+          'restaurant.dishs',
+          'dish',
+          'restaurant.id = dish.restaurantId',
+        )
+        .leftJoinAndMapMany(
+          'dish.images',
+          Image,
+          'images',
+          'dish.id = images.dishId',
+        )
+        .where('dish.restaurantId = :id', { id })
+        .orderBy('restaurant.id', 'DESC')
+        .getMany();
+      setTimeout(() => {
+        res(dishes);
+      }, 2000);
+    });
   }
 
   async update(id: number, updateDishDto: UpdateDishDto) {

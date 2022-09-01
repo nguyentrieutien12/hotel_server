@@ -119,13 +119,23 @@ export class HotelsService {
     } catch (error) {}
   }
   async findOneSpa(id: number) {
-    return await getRepository(Hotel)
-      .createQueryBuilder('hotel')
-      .leftJoinAndSelect('hotel.spas', 'spa', 'hotel.id = spa.hotelId')
-      .leftJoinAndMapMany('spa.images', Image, 'image', 'spa.id = image.spaId')
-      .where('hotel.id = :id', { id })
-      .orderBy('hotel.id', 'DESC')
-      .getMany();
+    return new Promise(async (res) => {
+      const spas = await getRepository(Hotel)
+        .createQueryBuilder('hotel')
+        .leftJoinAndSelect('hotel.spas', 'spa', 'hotel.id = spa.hotelId')
+        .leftJoinAndMapMany(
+          'spa.images',
+          Image,
+          'image',
+          'spa.id = image.spaId',
+        )
+        .where('hotel.id = :id', { id })
+        .orderBy('hotel.id', 'DESC')
+        .getMany();
+      setTimeout(() => {
+        res(spas);
+      }, 2000);
+    });
   }
 
   async update(id: number, updateHotelDto: UpdateHotelDto) {

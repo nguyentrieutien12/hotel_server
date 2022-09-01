@@ -42,23 +42,33 @@ export class SpasService {
     return `This action returns all spas`;
   }
   async findOne(id: number) {
-    return await getRepository(Spa)
-      .createQueryBuilder('spa')
-      .leftJoinAndMapOne('spa.image', Image, 'images', 'spa.id = images.spaId')
-      .leftJoinAndSelect(
-        'spa.treatments',
-        'treatment',
-        'spa.id = treatment.spaId',
-      )
-      .leftJoinAndMapMany(
-        'treatment.images',
-        Image,
-        'image',
-        'treatment.id = image.treatmentId',
-      )
-      .where('treatment.spaId = :id', { id })
-      .orderBy('treatment.id', 'DESC')
-      .getMany();
+    return new Promise(async (res) => {
+      const spas = await getRepository(Spa)
+        .createQueryBuilder('spa')
+        .leftJoinAndMapOne(
+          'spa.image',
+          Image,
+          'images',
+          'spa.id = images.spaId',
+        )
+        .leftJoinAndSelect(
+          'spa.treatments',
+          'treatment',
+          'spa.id = treatment.spaId',
+        )
+        .leftJoinAndMapMany(
+          'treatment.images',
+          Image,
+          'image',
+          'treatment.id = image.treatmentId',
+        )
+        .where('treatment.spaId = :id', { id })
+        .orderBy('treatment.id', 'DESC')
+        .getMany();
+      setTimeout(() => {
+        res(spas);
+      }, 2000);
+    });
   }
 
   async update(id: number, updateSpaDto: UpdateSpaDto) {
