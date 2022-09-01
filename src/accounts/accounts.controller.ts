@@ -29,6 +29,11 @@ export class AccountsController {
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
   ) {}
+  @UseGuards(JwtAuthGuard)
+  @Get('auth_token')
+  getProfile(@Request() req) {
+    return req.user;
+  }
   @Post()
   // @UseInterceptors(FilesInterceptor('files', 300, { storage }))
   @UsePipes(new ValidationPipe({ transform: true }))
@@ -69,6 +74,7 @@ export class AccountsController {
       message: 'Login Successfully!!',
     };
   }
+
   //   @Post('/profile/:id')
   //   @Roles(Role.ADMIN)
   //   getProfile(@Request() req) {
