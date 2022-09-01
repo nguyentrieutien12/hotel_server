@@ -70,7 +70,7 @@ export class SpasService {
       }, 2000);
     });
   }
-
+  // THIS IS FR
   async update(id: number, updateSpaDto: UpdateSpaDto) {
     try {
       const { images } = updateSpaDto;
