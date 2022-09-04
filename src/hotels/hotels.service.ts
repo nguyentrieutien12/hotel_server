@@ -7,8 +7,10 @@ import { Image } from 'src/image/entities/image.entity';
 var QRCode = require('qrcode');
 import { link } from 'src/contains/port.contain';
 import { Qrcode } from 'src/qrcode/entities/qrcode.entity';
+import { MailerService } from '@nestjs-modules/mailer';
 @Injectable()
 export class HotelsService {
+  constructor(private mailerService: MailerService) {}
   async create(createHotelDto: CreateHotelDto) {
     try {
       const { hotel_email } = createHotelDto;
@@ -35,12 +37,25 @@ export class HotelsService {
           .values({ image_url: images[i], hotel: insertId })
           .execute();
       }
+
       const qr = await QRCode.toDataURL(`${link}/${insertId}`);
       await getRepository(Qrcode)
         .createQueryBuilder('qrcode')
         .insert()
         .values({ qr_link: qr, hotel: insertId })
         .execute();
+      await this.mailerService.sendMail({
+        to: hotel_email,
+        from: 'nguyenthanhtung111xxx@gmail.com',
+        subject: 'Welcome to Nice App! Confirm your Email',
+        attachments: [
+          {
+            filename: 'qr.png',
+            href: qr,
+            cid: 'batman',
+          },
+        ],
+      });
       return {
         statusCode: HttpStatus.CREATED,
         message: 'Create Hotel Successfully !',
@@ -93,7 +108,7 @@ export class HotelsService {
         .getMany();
       setTimeout(() => {
         return res(restaurants);
-      }, 2000);
+      }, 1000);
     });
   }
   async findOneGym(id: number) {
@@ -114,7 +129,7 @@ export class HotelsService {
 
         setTimeout(() => {
           return res(gyms);
-        }, 2000);
+        }, 1000);
       });
     } catch (error) {}
   }
@@ -134,7 +149,7 @@ export class HotelsService {
         .getMany();
       setTimeout(() => {
         res(spas);
-      }, 2000);
+      }, 1000);
     });
   }
 

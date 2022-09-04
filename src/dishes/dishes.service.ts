@@ -71,7 +71,7 @@ export class DishesService {
         .getMany();
       setTimeout(() => {
         res(dishes);
-      }, 2000);
+      }, 1000);
     });
   }
 

@@ -67,7 +67,7 @@ export class SpasService {
         .getMany();
       setTimeout(() => {
         res(spas);
-      }, 2000);
+      }, 1000);
     });
   }
   async update(id: number, updateSpaDto: UpdateSpaDto) {

@@ -59,7 +59,7 @@ export class GymsService {
         .getMany();
       setTimeout(() => {
         return res(gyms);
-      }, 2000);
+      }, 1000);
     });
   }
 
