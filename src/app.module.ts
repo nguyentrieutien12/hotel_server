@@ -23,6 +23,8 @@ import { RecoveryModule } from './recovery/recovery.module';
 import { BodyRecoveryModule } from './body_recovery/body_recovery.module';
 import { VideoModule } from './video/video.module';
 import { RecommendModule } from './recommend/recommend.module';
+import { MailModule } from './mail/mail.module';
+import { OrderModule } from './order/order.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -44,6 +46,8 @@ import { RecommendModule } from './recommend/recommend.module';
     BodyRecoveryModule,
     VideoModule,
     RecommendModule,
+    MailModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [

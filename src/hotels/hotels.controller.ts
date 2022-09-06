@@ -18,7 +18,7 @@ export class HotelsController {
   constructor(private readonly hotelsService: HotelsService) {}
 
   @Post()
-  @UsePipes(new ValidationPipe({ transform: true }))
+  // @UsePipes(new ValidationPipe({ transform: true }))
   create(@Body() createHotelDto: CreateHotelDto) {
     return this.hotelsService.create(createHotelDto);
   }
