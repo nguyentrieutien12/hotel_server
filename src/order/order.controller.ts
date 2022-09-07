@@ -27,14 +27,10 @@ export class OrderController {
   async createSpa(@Body() createOrderDto: any) {
     return await this.orderService.createSpa(createOrderDto);
   }
-  @Get()
-  findAll() {
-    return this.orderService.findAll();
-  }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.orderService.findOne(+id);
+  @Get()
+  async findOne() {
+    return await this.orderService.findOne();
   }
 
   @Patch(':id')

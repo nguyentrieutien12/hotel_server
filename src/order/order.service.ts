@@ -1,18 +1,23 @@
+import { Restaurant } from './../restaurants/entities/restaurant.entity';
 import { getRepository } from 'typeorm';
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { Order } from './entities/order.entity';
+import { Account } from 'src/accounts/entities/account.entity';
+import { Hotel } from 'src/hotels/entities/hotel.entity';
+import { Spa } from 'src/spas/entities/spa.entity';
+import { Gym } from 'src/gyms/entities/gym.entity';
 
 @Injectable()
 export class OrderService {
   async createRestaurant(createOrderDto: any) {
-    const { hotelId, restaurantId, time, email } = createOrderDto;
+    const { type, hotelId, restaurantId, time, account } = createOrderDto;
     try {
       await getRepository(Order)
         .createQueryBuilder('order')
         .insert()
-        .values({ hotel: hotelId, dish: restaurantId, time, email })
+        .values({ type, hotel: hotelId, dish: restaurantId, time, account })
         .execute();
       return {
         statusCode: HttpStatus.CREATED,
@@ -23,12 +28,19 @@ export class OrderService {
     }
   }
   async createGym(createOrderDto: any) {
-    const { hotelId, gymId, time, email } = createOrderDto;
+    const { type, hotelId, gymId, time, account } = createOrderDto;
     try {
+      console.log(createOrderDto);
       await getRepository(Order)
         .createQueryBuilder('order')
         .insert()
-        .values({ hotel: hotelId, workout: gymId, time, email })
+        .values({
+          type,
+          hotel: parseInt(hotelId),
+          workout: parseInt(gymId),
+          time,
+          account,
+        })
         .execute();
       return {
         statusCode: HttpStatus.CREATED,
@@ -39,13 +51,13 @@ export class OrderService {
     }
   }
   async createSpa(createOrderDto: any) {
-    const { hotelId, SpaId, time, email } = createOrderDto;
+    const { type, hotelId, spaId, time, account } = createOrderDto;
     console.log(createOrderDto);
     try {
       await getRepository(Order)
         .createQueryBuilder('order')
         .insert()
-        .values({ hotel: hotelId, treatment: SpaId, time, email })
+        .values({ type, hotel: hotelId, treatment: spaId, time, account })
         .execute();
       return {
         statusCode: HttpStatus.CREATED,
@@ -59,8 +71,85 @@ export class OrderService {
     return `This action returns all order`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
+  async findOne() {
+    try {
+      const hotels = await getRepository(Order)
+        .createQueryBuilder('order')
+        .innerJoinAndMapOne(
+          'order.hotels',
+          Hotel,
+          'hotels',
+          'hotels.id = order.hotelId',
+        )
+        .groupBy('order.hotelId')
+        .getMany();
+      const restaurant = await getRepository(Order)
+        .createQueryBuilder('order')
+        .innerJoinAndMapOne(
+          'order.restaurant',
+          Restaurant,
+          'restaurant',
+          'restaurant.id = order.dishId',
+        )
+        .innerJoinAndMapOne(
+          'order.account',
+          Account,
+          'account',
+          'account.id = order.accountId',
+        )
+        .innerJoinAndMapOne(
+          'order.hotel',
+          Hotel,
+          'hotel',
+          'hotel.id = order.hotelId',
+        )
+        .getMany();
+      const spa = await getRepository(Order)
+        .createQueryBuilder('order')
+        .innerJoinAndMapOne(
+          'order.spa',
+          Spa,
+          'spa',
+          'spa.id = order.treatmentId',
+        )
+        .innerJoinAndMapOne(
+          'order.account',
+          Account,
+          'account',
+          'account.id = order.accountId',
+        )
+        .innerJoinAndMapOne(
+          'order.hotel',
+          Hotel,
+          'hotel',
+          'hotel.id = order.hotelId',
+        )
+        .getMany();
+      const gym = await getRepository(Order)
+        .createQueryBuilder('order')
+        .innerJoinAndMapOne('order.gym', Gym, 'gym', 'gym.id = order.workoutId')
+        .innerJoinAndMapOne(
+          'order.account',
+          Account,
+          'account',
+          'account.id = order.accountId',
+        )
+        .innerJoinAndMapOne(
+          'order.hotel',
+          Hotel,
+          'hotel',
+          'hotel.id = order.hotelId',
+        )
+        .getMany();
+      return {
+        spa,
+        gym,
+        restaurant,
+        hotels,
+      };
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   update(id: number, updateOrderDto: UpdateOrderDto) {
