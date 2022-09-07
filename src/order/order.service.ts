@@ -14,10 +14,18 @@ export class OrderService {
   async createRestaurant(createOrderDto: any) {
     const { type, hotelId, restaurantId, time, account } = createOrderDto;
     try {
+      console.log(createOrderDto);
+
       await getRepository(Order)
         .createQueryBuilder('order')
         .insert()
-        .values({ type, hotel: hotelId, dish: restaurantId, time, account })
+        .values({
+          type,
+          hotel: parseInt(hotelId),
+          dish: parseInt(restaurantId),
+          time,
+          account,
+        })
         .execute();
       return {
         statusCode: HttpStatus.CREATED,

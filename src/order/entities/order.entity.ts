@@ -1,3 +1,4 @@
+import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
 import { Gym } from './../../gyms/entities/gym.entity';
 import { Dish } from './../../dishes/entities/dish.entity';
 import { Treatment } from 'src/treatments/entities/treatment.entity';
@@ -24,7 +25,7 @@ export class Order {
     onUpdate: 'CASCADE',
   })
   treatment: number;
-  @ManyToOne(() => Treatment, (treatment) => treatment.id, {
+  @ManyToOne(() => Restaurant, (restaurant) => restaurant.id, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
