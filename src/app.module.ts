@@ -25,6 +25,7 @@ import { VideoModule } from './video/video.module';
 import { RecommendModule } from './recommend/recommend.module';
 import { MailModule } from './mail/mail.module';
 import { OrderModule } from './order/order.module';
+import { FeedbackModule } from './feedback/feedback.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -48,6 +49,7 @@ import { OrderModule } from './order/order.module';
     RecommendModule,
     MailModule,
     OrderModule,
+    FeedbackModule,
   ],
   controllers: [AppController],
   providers: [

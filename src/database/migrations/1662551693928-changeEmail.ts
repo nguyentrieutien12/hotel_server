@@ -1,26 +1,26 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class addEamil1662476705187 implements MigrationInterface {
-  name = 'addEamil1662476705187';
+export class changeEmail1662551693928 implements MigrationInterface {
+  name = 'changeEmail1662551693928';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE \`order\` (\`id\` int NOT NULL AUTO_INCREMENT, \`time\` varchar(255) NOT NULL, \`hotelId\` int NULL, \`treatmentId\` int NULL, \`dishId\` int NULL, \`workoutId\` int NULL, \`emailId\` int NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`,
+      `CREATE TABLE \`order\` (\`id\` int NOT NULL AUTO_INCREMENT, \`time\` varchar(255) NOT NULL, \`type\` varchar(255) NOT NULL, \`hotelId\` int NULL, \`treatmentId\` int NULL, \`dishId\` int NULL, \`workoutId\` int NULL, \`accountId\` int NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`,
     );
     await queryRunner.query(
       `ALTER TABLE \`order\` ADD CONSTRAINT \`FK_9a7d7b198f413b24c3d0a850e98\` FOREIGN KEY (\`hotelId\`) REFERENCES \`hotel\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE`,
     );
     await queryRunner.query(
-      `ALTER TABLE \`order\` ADD CONSTRAINT \`FK_c0cd5ccfc8f87f01fda5f60d425\` FOREIGN KEY (\`treatmentId\`) REFERENCES \`treatment\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE`,
+      `ALTER TABLE \`order\` ADD CONSTRAINT \`FK_c0cd5ccfc8f87f01fda5f60d425\` FOREIGN KEY (\`treatmentId\`) REFERENCES \`spa\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE`,
     );
     await queryRunner.query(
-      `ALTER TABLE \`order\` ADD CONSTRAINT \`FK_977a720b2e5040835dfa5a12284\` FOREIGN KEY (\`dishId\`) REFERENCES \`dish\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE`,
+      `ALTER TABLE \`order\` ADD CONSTRAINT \`FK_977a720b2e5040835dfa5a12284\` FOREIGN KEY (\`dishId\`) REFERENCES \`restaurant\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE`,
     );
     await queryRunner.query(
-      `ALTER TABLE \`order\` ADD CONSTRAINT \`FK_efca872c25132553f0326c62630\` FOREIGN KEY (\`workoutId\`) REFERENCES \`workout\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE`,
+      `ALTER TABLE \`order\` ADD CONSTRAINT \`FK_efca872c25132553f0326c62630\` FOREIGN KEY (\`workoutId\`) REFERENCES \`gym\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE`,
     );
     await queryRunner.query(
-      `ALTER TABLE \`order\` ADD CONSTRAINT \`FK_94e5e2a9d40d2ab0795b03e41b0\` FOREIGN KEY (\`emailId\`) REFERENCES \`account\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE`,
+      `ALTER TABLE \`order\` ADD CONSTRAINT \`FK_8cb9cecbc8b09bf60c71f7a9680\` FOREIGN KEY (\`accountId\`) REFERENCES \`account\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE`,
     );
   }
 
@@ -29,7 +29,7 @@ export class addEamil1662476705187 implements MigrationInterface {
       `ALTER TABLE \`video\` DROP FOREIGN KEY \`FK_cc21f2512092fe2305a84d2f98d\``,
     );
     await queryRunner.query(
-      `ALTER TABLE \`order\` DROP FOREIGN KEY \`FK_94e5e2a9d40d2ab0795b03e41b0\``,
+      `ALTER TABLE \`order\` DROP FOREIGN KEY \`FK_8cb9cecbc8b09bf60c71f7a9680\``,
     );
     await queryRunner.query(
       `ALTER TABLE \`order\` DROP FOREIGN KEY \`FK_efca872c25132553f0326c62630\``,
