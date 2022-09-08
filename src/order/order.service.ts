@@ -1,7 +1,6 @@
 import { Restaurant } from './../restaurants/entities/restaurant.entity';
 import { getRepository } from 'typeorm';
 import { Injectable, HttpStatus } from '@nestjs/common';
-import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { Order } from './entities/order.entity';
 import { Account } from 'src/accounts/entities/account.entity';
