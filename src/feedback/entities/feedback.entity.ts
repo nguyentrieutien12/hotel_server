@@ -1,3 +1,4 @@
+import { Hotel } from './../../hotels/entities/hotel.entity';
 import { Account } from 'src/accounts/entities/account.entity';
 import {
   Column,
@@ -20,4 +21,6 @@ export class Feedback {
     onUpdate: 'CASCADE',
   })
   account: number;
+  @ManyToOne(() => Hotel, (hotel) => hotel.id)
+  hotel: number;
 }
