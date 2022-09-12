@@ -13,8 +13,6 @@ export class OrderService {
   async createRestaurant(createOrderDto: any) {
     const { type, hotelId, restaurantId, time, account } = createOrderDto;
     try {
-      console.log(createOrderDto);
-
       await getRepository(Order)
         .createQueryBuilder('order')
         .insert()
@@ -37,7 +35,6 @@ export class OrderService {
   async createGym(createOrderDto: any) {
     const { type, hotelId, gymId, time, account } = createOrderDto;
     try {
-      console.log(createOrderDto);
       await getRepository(Order)
         .createQueryBuilder('order')
         .insert()
@@ -59,7 +56,6 @@ export class OrderService {
   }
   async createSpa(createOrderDto: any) {
     const { type, hotelId, spaId, time, account } = createOrderDto;
-    console.log(createOrderDto);
     try {
       await getRepository(Order)
         .createQueryBuilder('order')

@@ -6,10 +6,7 @@ import { getRepository } from 'typeorm';
 import { Account } from 'src/accounts/entities/account.entity';
 @Injectable()
 export class AuthService {
-  constructor(
-    private accountService: AccountsService,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private jwtService: JwtService) {}
 
   async validateAccount(email: string, pass: string): Promise<any> {
     try {
@@ -17,7 +14,6 @@ export class AuthService {
         .createQueryBuilder('account')
         .where({ email: email })
         .getOne();
-      console.log(account);
       const isMatch = await comparePassword(pass, account.password);
       if (account && isMatch === true) {
         const { password, address, sex, ...result } = account;
@@ -25,7 +21,7 @@ export class AuthService {
       }
       return null;
     } catch (error) {
-      console.log(1);
+      console.log(error);
     }
   }
   async login(account: any) {

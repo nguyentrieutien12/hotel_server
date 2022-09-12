@@ -3,6 +3,7 @@ import { getRepository } from 'typeorm';
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { CreateFeedbackDto } from './dto/create-feedback.dto';
 import { UpdateFeedbackDto } from './dto/update-feedback.dto';
+import { Hotel } from 'src/hotels/entities/hotel.entity';
 
 @Injectable()
 export class FeedbackService {
@@ -27,14 +28,35 @@ export class FeedbackService {
 
   async findAll() {
     try {
-      return await getRepository(Feedback)
+      const hotels = await getRepository(Feedback)
+        .createQueryBuilder('feedback')
+        .innerJoinAndMapOne(
+          'feedback.hotels',
+          Hotel,
+          'hotels',
+          'hotels.id = feedback.hotelId',
+        )
+        .groupBy('feedback.hotelId')
+        .getMany();
+      const feedbacks = await getRepository(Feedback)
         .createQueryBuilder('feedback')
         .leftJoinAndSelect(
           'feedback.account',
           'account',
           'account.id = feedback.accountId',
         )
+        .leftJoinAndMapOne(
+          'feedback.hotel',
+          Hotel,
+          'hotel',
+          'hotel.id = feedback.hotelId',
+        )
         .getMany();
+
+      return {
+        hotels,
+        feedbacks,
+      };
     } catch (error) {
       console.log(error);
     }
