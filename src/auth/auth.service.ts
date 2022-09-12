@@ -6,10 +6,7 @@ import { getRepository } from 'typeorm';
 import { Account } from 'src/accounts/entities/account.entity';
 @Injectable()
 export class AuthService {
-  constructor(
-    private accountService: AccountsService,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private jwtService: JwtService) {}
 
   async validateAccount(email: string, pass: string): Promise<any> {
     try {
