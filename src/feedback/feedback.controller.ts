@@ -27,7 +27,10 @@ export class FeedbackController {
   async findAll() {
     return await this.feedbackService.findAll();
   }
-
+  @Get('/all')
+  async getAll() {
+    return await this.feedbackService.getAll();
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.feedbackService.findOne(+id);

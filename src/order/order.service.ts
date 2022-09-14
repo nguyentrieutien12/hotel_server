@@ -70,10 +70,22 @@ export class OrderService {
       console.log(error);
     }
   }
-  findAll() {
-    return `This action returns all order`;
+  async findAll() {
+    try {
+      return await getRepository(Order).createQueryBuilder('order').getMany();
+    } catch (error) {}
   }
-
+  async findTop() {
+    try {
+      return await getRepository(Order)
+        .createQueryBuilder()
+        .select('count(order.hotelId)')
+        .groupBy('hotelId')
+        .getMany();
+    } catch (error) {
+      console.log(error);
+    }
+  }
   async findOne() {
     try {
       const hotels = await getRepository(Order)

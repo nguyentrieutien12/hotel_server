@@ -26,6 +26,7 @@ import { RecommendModule } from './recommend/recommend.module';
 import { MailModule } from './mail/mail.module';
 import { OrderModule } from './order/order.module';
 import { FeedbackModule } from './feedback/feedback.module';
+import { QuizModule } from './quiz/quiz.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -50,6 +51,7 @@ import { FeedbackModule } from './feedback/feedback.module';
     MailModule,
     OrderModule,
     FeedbackModule,
+    QuizModule,
   ],
   controllers: [AppController],
   providers: [
