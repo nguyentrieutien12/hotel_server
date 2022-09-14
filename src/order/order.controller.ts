@@ -32,7 +32,14 @@ export class OrderController {
   async findOne() {
     return await this.orderService.findOne();
   }
-
+  @Get('/all')
+  async findAll() {
+    return await this.orderService.findAll();
+  }
+  @Get('/top')
+  async findTop() {
+    return await this.orderService.findTop();
+  }
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
     return this.orderService.update(+id, updateOrderDto);

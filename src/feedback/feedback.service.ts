@@ -25,7 +25,13 @@ export class FeedbackService {
       };
     }
   }
-
+  async getAll() {
+    try {
+      return await getRepository(Feedback)
+        .createQueryBuilder('feedback')
+        .getMany();
+    } catch (error) {}
+  }
   async findAll() {
     try {
       const hotels = await getRepository(Feedback)
