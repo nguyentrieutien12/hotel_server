@@ -96,7 +96,7 @@ export class AccountsController {
       const token = this.jwtService.sign(
         { email },
         {
-          expiresIn: '10s',
+          expiresIn: '300s',
           secret: jwtConstants.reset_password,
         },
       );
@@ -144,7 +144,6 @@ export class AccountsController {
         .createQueryBuilder('account')
         .where('email = :email', { email })
         .getOne();
-      console.log(findAccount);
       if (findAccount) {
         await getRepository(Account)
           .createQueryBuilder('account')

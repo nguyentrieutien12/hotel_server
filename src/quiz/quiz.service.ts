@@ -1,3 +1,4 @@
+import { Hotel } from './../hotels/entities/hotel.entity';
 import { Quiz } from './entities/quiz.entity';
 import { getRepository } from 'typeorm';
 import { Injectable, HttpStatus } from '@nestjs/common';
@@ -24,8 +25,31 @@ export class QuizService {
     }
   }
 
-  findAll() {
-    return `This action returns all quiz`;
+  async findAll() {
+    const hotels = await getRepository(Quiz)
+      .createQueryBuilder('quiz')
+      .innerJoinAndMapOne(
+        'quiz.hotels',
+        Hotel,
+        'hotels',
+        'hotels.id = quiz.hotelId',
+      )
+      .groupBy('quiz.hotelId')
+      .getMany();
+
+    const quizs = await getRepository(Quiz)
+      .createQueryBuilder('quiz')
+      .innerJoinAndMapOne(
+        'quiz.hotels',
+        Hotel,
+        'hotels',
+        'hotels.id = quiz.hotelId',
+      )
+      .getMany();
+    return {
+      hotels,
+      quizs,
+    };
   }
 
   findOne(id: number) {
