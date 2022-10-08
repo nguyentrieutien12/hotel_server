@@ -9,7 +9,7 @@ import { AuthService } from 'src/auth/auth.service';
   imports: [
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '2h' },
+      signOptions: { expiresIn: '3000s' },
     }),
   ],
   controllers: [AccountsController],

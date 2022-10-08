@@ -19,7 +19,6 @@ import {
   Inject,
   forwardRef,
   HttpStatus,
-  Response,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AccountsService } from './accounts.service';
