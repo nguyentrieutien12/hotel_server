@@ -19,6 +19,8 @@ export class QuizService {
         statusCode: HttpStatus.CREATED,
       };
     } catch (error) {
+      console.log(error);
+
       return {
         statusCode: HttpStatus.BAD_REQUEST,
       };
