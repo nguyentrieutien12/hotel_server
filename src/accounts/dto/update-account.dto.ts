@@ -10,6 +10,8 @@ export class UpdateAccountDto {
   @IsNotEmpty()
   address: string;
   @IsNotEmpty()
+  phone_number: string;
+  @IsNotEmpty()
   sex: string;
   password?: string;
   @Match('password')

@@ -23,6 +23,8 @@ export class Account {
   sex: string;
   @Column()
   password: string;
+  @Column()
+  phone_number: string;
   @OneToOne(() => Role, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',

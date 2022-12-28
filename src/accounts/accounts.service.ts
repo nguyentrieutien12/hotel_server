@@ -43,14 +43,26 @@ export class AccountsService {
   }
 
   async update(id: number, updateAccountDto: UpdateAccountDto) {
+    console.log(updateAccountDto);
+
     let newUpdateAccount = {};
     if (updateAccountDto.password) {
       updateAccountDto.password = await hashPassword(updateAccountDto.password);
-      var { username, email, address, sex, password, role } = updateAccountDto;
-      newUpdateAccount = { username, email, address, sex, password, role };
+      var { username, email, address, sex, password, role, phone_number } =
+        updateAccountDto;
+      newUpdateAccount = {
+        username,
+        email,
+        address,
+        sex,
+        password,
+        role,
+        phone_number,
+      };
     } else {
-      var { username, email, address, sex, role } = updateAccountDto;
-      newUpdateAccount = { username, email, address, sex, role };
+      var { username, email, address, sex, role, phone_number } =
+        updateAccountDto;
+      newUpdateAccount = { username, email, address, sex, role, phone_number };
     }
 
     try {
