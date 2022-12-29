@@ -102,7 +102,7 @@ export class AccountsController {
 
       await this.MailerService.sendMail({
         to: email,
-        from: 'nguyenthanhtung111xxx@gmail.com',
+        from: 'tientrieu10111@gmail.com',
         subject: 'Welcome to Nice App! Confirm your Email',
         html: ` <a href="http://localhost:5173/confirm-password?email=${email}&token=${token}">Click To Change Password</a>`,
       });
