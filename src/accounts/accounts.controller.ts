@@ -56,6 +56,8 @@ export class AccountsController {
     @Body() createAccountDto: CreateAccountDto,
     // @UploadedFiles() files,
   ) {
+    console.log(createAccountDto);
+    
     return await this.accountsService.create(createAccountDto);
   }
   @UseGuards(JwtAuthGuard)
