@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { hashPassword } from 'src/helpers/password_hash.helper';
+import { hashPassword } from './../helpers/password_hash.helper';
 import { getRepository } from 'typeorm';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';

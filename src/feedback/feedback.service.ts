@@ -30,7 +30,10 @@ export class FeedbackService {
       return await getRepository(Feedback)
         .createQueryBuilder('feedback')
         .getMany();
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+      
+    }
   }
   async findAll() {
     try {
