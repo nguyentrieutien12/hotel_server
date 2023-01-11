@@ -1,3 +1,4 @@
+
 import {
   Controller,
   Get,
@@ -28,7 +29,7 @@ export class OrderController {
     return await this.orderService.createSpa(createOrderDto);
   }
 
-  @Get("/ssss")
+  @Get()
   async findOne() {
     return await this.orderService.findOne();
   }

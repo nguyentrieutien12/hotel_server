@@ -35,9 +35,9 @@ export class QuizService {
         Hotel,
         'hotels',
         'hotels.id = quiz.hotelId',
-      )
-      .groupBy('quiz.hotelId')
+      ).distinct(true)
       .getMany();
+console.log(hotels);
 
     const quizs = await getRepository(Quiz)
       .createQueryBuilder('quiz')
