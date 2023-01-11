@@ -1,3 +1,4 @@
+
 import { Feedback } from './entities/feedback.entity';
 import { getRepository } from 'typeorm';
 import { Injectable, HttpStatus } from '@nestjs/common';
@@ -42,7 +43,6 @@ export class FeedbackService {
           'hotels',
           'hotels.id = feedback.hotelId',
         )
-        .groupBy('feedback.hotelId')
         .getMany();
       const feedbacks = await getRepository(Feedback)
         .createQueryBuilder('feedback')

@@ -17,13 +17,12 @@ export class QuizController {
 
   @Post()
   async create(@Body() createQuizDto: any) {
-    console.log(createQuizDto);
     return await this.quizService.create(createQuizDto);
   }
 
   @Get()
-  findAll() {
-    return this.quizService.findAll();
+  async findAll() {
+    return await this.quizService.findAll();
   }
 
   @Get(':id')

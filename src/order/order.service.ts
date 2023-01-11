@@ -80,7 +80,6 @@ export class OrderService {
       return await getRepository(Order)
         .createQueryBuilder()
         .select('count(order.hotelId)')
-        .groupBy('hotelId')
         .getMany();
     } catch (error) {
       console.log(error);
@@ -96,7 +95,7 @@ export class OrderService {
           'hotels',
           'hotels.id = order.hotelId',
         )
-        .groupBy('order.hotelId')
+        .groupBy('order.id')
         .getMany();
       const restaurant = await getRepository(Order)
         .createQueryBuilder('order')
