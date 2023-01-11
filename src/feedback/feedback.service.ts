@@ -42,7 +42,6 @@ export class FeedbackService {
           'hotels',
           'hotels.id = feedback.hotelId',
         )
-        .groupBy('feedback.hotelId')
         .getMany();
       const feedbacks = await getRepository(Feedback)
         .createQueryBuilder('feedback')
