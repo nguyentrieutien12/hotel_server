@@ -23,6 +23,8 @@ export class AccountsService {
         message: 'Create Account Successfully !',
       };
     } catch (error) {
+      console.log(error);
+      
       throw new HttpException('Create Account Fail !', HttpStatus.BAD_REQUEST);
     }
   }

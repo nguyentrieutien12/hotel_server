@@ -1,3 +1,4 @@
+
 import { jwtConstants } from './../auth/constants';
 import { JwtModule } from '@nestjs/jwt';
 import { Module } from '@nestjs/common';
@@ -9,7 +10,7 @@ import { AuthService } from 'src/auth/auth.service';
   imports: [
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '3000s' },
+      signOptions: { expiresIn: '2h' },
     }),
   ],
   controllers: [AccountsController],
