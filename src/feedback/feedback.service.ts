@@ -37,34 +37,9 @@ export class FeedbackService {
   }
   async findAll() {
     try {
-      const hotels = await getRepository(Feedback)
-        .createQueryBuilder('feedback')
-        .innerJoinAndMapOne(
-          'feedback.hotels',
-          Hotel,
-          'hotels',
-          'hotels.id = feedback.hotelId',
-        )
-        .groupBy('feedback.hotelId')
-        .getMany();
-      const feedbacks = await getRepository(Feedback)
-        .createQueryBuilder('feedback')
-        .leftJoinAndSelect(
-          'feedback.account',
-          'account',
-          'account.id = feedback.accountId',
-        )
-        .leftJoinAndMapOne(
-          'feedback.hotel',
-          Hotel,
-          'hotel',
-          'hotel.id = feedback.hotelId',
-        )
-        .getMany();
+      console.log('Nguyen Thanh Tung');
 
       return {
-        hotels,
-        feedbacks,
       };
     } catch (error) {
       console.log(error);
